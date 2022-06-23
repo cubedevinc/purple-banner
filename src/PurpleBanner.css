@@ -44,7 +44,7 @@
 
 .PurpleBanner--visible {
   max-height: 40px;
-  color: var(--white);
+  color: white;
 }
 
 .PurpleBanner__container {
@@ -68,6 +68,7 @@
   flex-grow: 1;
   padding: 7px;
   border: none;
+  box-sizing: border-box;
 
   height: 40px;
   margin: 0 2.5vw;
