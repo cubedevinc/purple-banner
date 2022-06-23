@@ -1,53 +1,151 @@
-.cubedev-purple-banner {
+.PurpleBanner {
   overflow: hidden;
   display: flex;
-  align-items: center;
+  align-items: center;;
   max-height: 0;
-  transition: max-height 0.3s linear;
+  transition: max-height 0.5s linear, color 0.5s linear;
+  color: transparent;
+  --current: 0;
+  --absoluteSlideNumber: 0;
+
+  position: relative;
 }
 
-.cubedev-purple-banner_no-animation {
+.PurpleBanner--noAnimate {
   transition: none;
 }
 
-.cubedev-purple-banner_visible {
-  max-height: 40px;
+.PurpleBanner::before {
+  position: absolute;
+  content: '';
+  height: 100vw;
+  width: 100vw;
+  background-image: radial-gradient(#9592FF 10%, #9592FF00 40%, #9592FF00),
+  conic-gradient(
+    #FF76A0 calc(90deg - 10deg),
+
+    #FFC1D3 calc(90deg + 10deg),
+    #FFC1D3 calc(150deg - 10deg),
+
+    #9592FF calc(150deg + 10deg),
+    #9592FF calc(210deg - 10deg),
+
+    #FFC1D3 calc(210deg + 10deg),
+    #FFC1D3 calc(270deg - 10deg),
+
+    #9592FF calc(270deg + 10deg),
+    #9592FF calc(330deg - 10deg),
+
+    #FF76A0 calc(330deg + 10deg));
+  background-position: center;
+  transform: rotate(calc(60deg * var(--absoluteSlideNumber) + 90deg));
+  transition: transform 1s;
 }
 
-.cubedev-purple-banner__link {
+.PurpleBanner--visible {
+  max-height: 40px;
+  color: var(--white);
+}
+
+.PurpleBanner__container {
+  transition: transform 1s;
+  transform: translate(calc(-50vw * var(--current) - 75vw));
+  display: flex;
+}
+
+.PurpleBanner__container--noAnimate,
+.PurpleBanner__container--noAnimate .PurpleBanner__link,
+.PurpleBanner__container--singleSlide {
+  transition: none;
+}
+
+.PurpleBanner__container--singleSlide {
+  width: 100%;
+}
+
+.PurpleBanner__link {
+  width: 45vw;
   flex-grow: 1;
   padding: 7px;
   border: none;
 
-  text-decoration: none;
-  font-family: "Cera Pro", sans-serif;
+  height: 40px;
+  margin: 0 2.5vw;
+
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  font-family: 'Cera Pro', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
   line-height: 26px;
+  display: inline-block;
   text-align: center;
   letter-spacing: 0.005em;
+  opacity: 1;
+  transition: text-decoration-color var(--hover_transtion), opacity 1s, transform 0.3s;
 
-  color: #ffffff;
-  background: radial-gradient(218.73% 98564.22% at 87.78% 50%, #ff76a0 0%, #9592ff 51.56%, #cac9ff 100%);
+  color: inherit;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.cubedev-purple-banner__link:hover,
-.cubedev-purple-banner__link:focus {
-  color: #ffffff;
-  text-decoration: underline;
+.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child) {
+  opacity: 0.4;
+  direction: rtl;
+  text-decoration: none;
 }
 
-@media screen and (max-width: 640px) {
-  .cubedev-purple-banner__link {
-    padding: 4px 16px;
-    text-align: left;
+.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):hover,
+.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-visible  {
+  text-decoration: none;
+  transform: translate(1em);
+}
+
+.PurpleBanner__link--active + .PurpleBanner__link:not(:only-child) {
+  direction: initial;
+}
+
+.PurpleBanner__link--active + .PurpleBanner__link:not(:only-child):hover,
+.PurpleBanner__link--active + .PurpleBanner__link:not(:only-child):focus-visible  {
+  text-decoration: none;
+  transform: translate(-1em);
+}
+
+.PurpleBanner__link:hover,
+.PurpleBanner__link:focus-visible {
+  color: inherit;
+  text-decoration-color: currentColor;
+  text-decoration-line: underline;
+}
+
+@media screen and (max-width: 960px) {
+  .PurpleBanner__link {
+    width: 100vw;
+    white-space: initial;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .PurpleBanner__container {
+    transform: translate(calc(-100vw * (var(--current) + 2)));
   }
 }
 
 @media screen and (max-width: 768px) {
-  .cubedev-purple-banner__link {
+  .PurpleBanner__link {
     font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .PurpleBanner__link {
+    padding: 4px 16px;
+    text-align: left;
     line-height: 16px;
   }
 }
+
