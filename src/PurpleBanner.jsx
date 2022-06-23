@@ -47,26 +47,6 @@ function PurpleBanner () {
     }
   }, []);
 
-  const eventsMock = [
-    {
-      link: 'https://cube.dev/events/sql-api/',
-      message: 'LONDON, 21st June: Join us for The Data Engineering Show on the Road!',
-      campaign: 'd',
-    }, {
-      link: 'https://cube.dev/events/sql-api/',
-      message: 'Announcing expanded support for BI applications',
-      campaign: 'd',
-    }, {
-      link: 'https://cube.dev/events/sql-api/',
-      message: 'Free workshop, 18th May: “How to Build Data Applications with Cube”—register now!',
-      campaign: 'd',
-    }, {
-      link: 'https://cube.dev/events/sql-api/',
-      message: 'New in Cube Cloud: monitor your instances with configurable alerts',
-      campaign: 'd',
-    },
-  ];
-
   const makeOnClick = (slideNumber) => {
     return  (event) => {
       if (slideNumber === currentEvent) {
@@ -82,18 +62,6 @@ function PurpleBanner () {
       clearTimeout(timeoutRef.current);
     };
   }
-
-  useEffect(() => {
-    loadEvents()
-      .then((events) => {
-        if (!eventsMock.length) {
-          return;
-        }
-        setEvents(eventsMock);
-        setLoading(false);
-        changeSlide(eventsMock);
-      });
-  }, []);
 
   let slides;
 
