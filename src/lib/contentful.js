@@ -11,8 +11,7 @@ const query = `
           {end_gte: "${currentISODate}"}
         ]
       },
-      order: [end_ASC],
-      limit: 1
+      order: [end_ASC]
     ) {
       items {
         message,
