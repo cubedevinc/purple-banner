@@ -1,11 +1,10 @@
-/* eslint-disable react/prop-types */
 import React, { useEffect, useRef, useState } from "react";
-import { loadEvents } from "./lib/contentful.js";
-import EventLink from "./EventLink.jsx";
-import { checkEvents, readEvents, writeEvents } from "./lib/session-storage.js";
-import styles from "./PurpleBanner.css";
-
 import classNames from "classnames/bind";
+import { loadEvents } from "./lib/contentful.js";
+import { checkEvents, readEvents, writeEvents } from "./lib/session-storage.js";
+import EventLink from "./EventLink.jsx";
+
+import styles from "./PurpleBanner.css";
 
 const cn = classNames.bind(styles);
 
@@ -63,7 +62,7 @@ function PurpleBanner() {
     };
   };
 
-  let slides;
+  let slides = null;
 
   if (events.length > 1 && !loading) {
     slides = (
@@ -99,7 +98,7 @@ function PurpleBanner() {
     slides = <EventLink event={events[0]} />;
   }
 
-  const forceChangeSlide = (isAbsoluteNumberChanging = false) => {
+  const forceChangeSlide = () => {
     setNoAnimate(true);
     if (currentEvent === -1) {
       // если первый виртуальный
