@@ -1,14 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useEffect, useRef, useState } from "react";
 import { loadEvents } from "./lib/contentful.js";
-import  EventLink from "./EventLink.jsx";
+import EventLink from "./EventLink.jsx";
 import { checkEvents, readEvents, writeEvents } from "./lib/session-storage.js";
-import styles from './PurpleBanner.css';
+import styles from "./PurpleBanner.css";
 
-import classNames from 'classnames/bind';
+import classNames from "classnames/bind";
 
 const cn = classNames.bind(styles);
 
-function PurpleBanner () {
+function PurpleBanner() {
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState([]);
   const [isFirstLoading, setFirstLoading] = useState(true);
@@ -17,7 +18,6 @@ function PurpleBanner () {
   const [noAnimate, setNoAnimate] = useState(false);
   const containerRef = useRef();
   const timeoutRef = useRef({});
-
 
   useEffect(() => {
     if (checkEvents()) {
@@ -48,63 +48,61 @@ function PurpleBanner () {
   }, []);
 
   const makeOnClick = (slideNumber) => {
-    return  (event) => {
+    return (event) => {
       if (slideNumber === currentEvent) {
         return;
       }
       event.preventDefault();
       setCurrentEvent(slideNumber);
       if (slideNumber > currentEvent) {
-        setAbsoluteSlideNumber(absoluteSlideNumber => absoluteSlideNumber + 1);
+        setAbsoluteSlideNumber((absoluteSlideNumber) => absoluteSlideNumber + 1);
       } else {
-        setAbsoluteSlideNumber(absoluteSlideNumber => absoluteSlideNumber - 1);
+        setAbsoluteSlideNumber((absoluteSlideNumber) => absoluteSlideNumber - 1);
       }
       clearTimeout(timeoutRef.current);
     };
-  }
+  };
 
   let slides;
 
   if (events.length > 1 && !loading) {
-    slides = <>
-      <EventLink
-        event={events[events.length - 2]}
-        slideNumber={-2}
-        makeOnClick={makeOnClick}
-      />
-      <EventLink
-        event={events[events.length - 1]}
-        slideNumber={-1}
-        makeOnClick={makeOnClick}
-        isActive={currentEvent === -1}/>
-      {events.map((item, index) => {
-        return <EventLink
-          key={item.id}
-          event={item}
-          slideNumber={index}
+    slides = (
+      <>
+        <EventLink event={events[events.length - 2]} slideNumber={-2} makeOnClick={makeOnClick} />
+        <EventLink
+          event={events[events.length - 1]}
+          slideNumber={-1}
           makeOnClick={makeOnClick}
-          isActive={index === currentEvent}
-        />;
-      })}
-      <EventLink
-        event={events[0]}
-        slideNumber={events.length}
-        makeOnClick={makeOnClick}
-        isActive={events.length === currentEvent}
-      />
-      <EventLink
-        event={events[1]}
-        slideNumber={1}
-        makeOnClick={makeOnClick}
-      />
-    </>;
+          isActive={currentEvent === -1}
+        />
+        {events.map((item, index) => {
+          return (
+            <EventLink
+              key={item.id}
+              event={item}
+              slideNumber={index}
+              makeOnClick={makeOnClick}
+              isActive={index === currentEvent}
+            />
+          );
+        })}
+        <EventLink
+          event={events[0]}
+          slideNumber={events.length}
+          makeOnClick={makeOnClick}
+          isActive={events.length === currentEvent}
+        />
+        <EventLink event={events[1]} slideNumber={1} makeOnClick={makeOnClick} />
+      </>
+    );
   } else if (!loading) {
-    slides = <EventLink event={events[0]}/>;
+    slides = <EventLink event={events[0]} />;
   }
 
   const forceChangeSlide = (isAbsoluteNumberChanging = false) => {
     setNoAnimate(true);
-    if (currentEvent === -1) { // если первый виртуальный
+    if (currentEvent === -1) {
+      // если первый виртуальный
       setCurrentEvent(events.length - 1);
     } else {
       setCurrentEvent(0);
@@ -112,15 +110,15 @@ function PurpleBanner () {
     setTimeout(() => {
       setNoAnimate(false);
     }, 0);
-  }
+  };
 
   const changeSlide = (events) => {
     if (currentEvent === events.length || currentEvent === -1) {
-      forceChangeSlide()
+      forceChangeSlide();
     }
     timeoutRef.current = setTimeout(() => {
-      setCurrentEvent(currentEvent => (currentEvent + 1) % (events.length + 1));
-      setAbsoluteSlideNumber(absoluteSlideNumber => absoluteSlideNumber + 1);
+      setCurrentEvent((currentEvent) => (currentEvent + 1) % (events.length + 1));
+      setAbsoluteSlideNumber((absoluteSlideNumber) => absoluteSlideNumber + 1);
     }, 4000);
   };
 
@@ -132,18 +130,20 @@ function PurpleBanner () {
   };
 
   return (
-    <div className={cn('PurpleBanner', {
-      'PurpleBanner--visible': !loading,
-      'PurpleBanner--noAnimate': isFirstLoading,
-    })}
-         style={{
-           '--current': currentEvent,
-           '--absoluteSlideNumber': absoluteSlideNumber,
-         }}>
+    <div
+      className={cn("PurpleBanner", {
+        "PurpleBanner--visible": !loading,
+        "PurpleBanner--noAnimate": isFirstLoading,
+      })}
+      style={{
+        "--current": currentEvent,
+        "--absoluteSlideNumber": absoluteSlideNumber,
+      }}
+    >
       <div
-        className={cn('PurpleBanner__container', {
-          'PurpleBanner__container--noAnimate': noAnimate,
-          'PurpleBanner__container--singleSlide': events.length === 1,
+        className={cn("PurpleBanner__container", {
+          "PurpleBanner__container--noAnimate": noAnimate,
+          "PurpleBanner__container--singleSlide": events.length === 1,
         })}
         ref={containerRef}
         onTransitionEnd={handleChangeSlide}

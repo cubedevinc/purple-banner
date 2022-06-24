@@ -1,7 +1,7 @@
 .PurpleBanner {
   overflow: hidden;
   display: flex;
-  align-items: center;;
+  align-items: center;
   max-height: 0;
   transition: max-height 0.5s linear, color 0.5s linear;
   color: transparent;
@@ -17,26 +17,22 @@
 
 .PurpleBanner::before {
   position: absolute;
-  content: '';
+  content: "";
   height: 100vw;
   width: 100vw;
-  background-image: radial-gradient(#9592FF 10%, #9592FF00 40%, #9592FF00),
-  conic-gradient(
-    #FF76A0 calc(90deg - 10deg),
-
-    #FFC1D3 calc(90deg + 10deg),
-    #FFC1D3 calc(150deg - 10deg),
-
-    #9592FF calc(150deg + 10deg),
-    #9592FF calc(210deg - 10deg),
-
-    #FFC1D3 calc(210deg + 10deg),
-    #FFC1D3 calc(270deg - 10deg),
-
-    #9592FF calc(270deg + 10deg),
-    #9592FF calc(330deg - 10deg),
-
-    #FF76A0 calc(330deg + 10deg));
+  background-image: radial-gradient(#9592ff 10%, #9592ff00 40%, #9592ff00),
+    conic-gradient(
+      #ff76a0 calc(90deg - 10deg),
+      #ffc1d3 calc(90deg + 10deg),
+      #ffc1d3 calc(150deg - 10deg),
+      #9592ff calc(150deg + 10deg),
+      #9592ff calc(210deg - 10deg),
+      #ffc1d3 calc(210deg + 10deg),
+      #ffc1d3 calc(270deg - 10deg),
+      #9592ff calc(270deg + 10deg),
+      #9592ff calc(330deg - 10deg),
+      #ff76a0 calc(330deg + 10deg)
+    );
   background-position: center;
   transform: rotate(calc(60deg * var(--absoluteSlideNumber) + 90deg));
   transition: transform 1s;
@@ -75,7 +71,7 @@
 
   text-decoration-line: underline;
   text-decoration-color: transparent;
-  font-family: 'Cera Pro', sans-serif;
+  font-family: "Cera Pro", sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -100,7 +96,7 @@
 }
 
 .PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):hover,
-.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-visible  {
+.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-visible {
   text-decoration: none;
   transform: translate(1em);
 }
@@ -110,7 +106,7 @@
 }
 
 .PurpleBanner__link--active + .PurpleBanner__link:not(:only-child):hover,
-.PurpleBanner__link--active + .PurpleBanner__link:not(:only-child):focus-visible  {
+.PurpleBanner__link--active + .PurpleBanner__link:not(:only-child):focus-visible {
   text-decoration: none;
   transform: translate(-1em);
 }
@@ -149,4 +145,3 @@
     line-height: 16px;
   }
 }
-
