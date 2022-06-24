@@ -128,20 +128,23 @@
     align-items: center;
   }
 
-  .PurpleBanner__container {
+  .PurpleBanner__container:not(.PurpleBanner__container--singleSlide)  {
     transform: translate(calc(-100vw * (var(--current) + 2)));
   }
 }
 
 @media screen and (max-width: 768px) {
-  .PurpleBanner__link {
-    font-size: 12px;
+  .PurpleBanner__link{
+    font-size: 14px;
   }
 }
 
 @media screen and (max-width: 640px) {
+  .PurpleBanner--visible {
+    max-height: 48px;
+  }
   .PurpleBanner__link {
-    padding: 4px 16px;
+    padding: 0 16px;
     text-align: left;
     line-height: 16px;
   }
