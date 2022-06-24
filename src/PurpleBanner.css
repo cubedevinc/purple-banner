@@ -57,6 +57,7 @@
 
 .PurpleBanner__container--singleSlide {
   width: 100%;
+  transform: translate(0);
 }
 
 .PurpleBanner__link {
