@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from "react";
 import { setUTM } from "./lib/link.js";
 import styles from "./PurpleBanner.css";
