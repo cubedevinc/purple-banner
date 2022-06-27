@@ -3,7 +3,6 @@
   "description": "React-component for showing Cube Dev, Inc. events on our websites.",
   "version": "1.0.0",
   "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
   "files": [
     "dist",
     "README.md"
