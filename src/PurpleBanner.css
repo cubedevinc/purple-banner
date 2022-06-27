@@ -128,13 +128,13 @@
     align-items: center;
   }
 
-  .PurpleBanner__container:not(.PurpleBanner__container--singleSlide)  {
+  .PurpleBanner__container:not(.PurpleBanner__container--singleSlide) {
     transform: translate(calc(-100vw * (var(--current) + 2)));
   }
 }
 
 @media screen and (max-width: 768px) {
-  .PurpleBanner__link{
+  .PurpleBanner__link {
     font-size: 14px;
   }
 }
