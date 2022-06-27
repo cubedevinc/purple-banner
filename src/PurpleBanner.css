@@ -8,6 +8,8 @@
   --current: 0;
   --absoluteSlideNumber: 0;
 
+  --hover_transtion: 0.3s;
+
   position: relative;
 }
 
@@ -94,6 +96,7 @@
   opacity: 0.4;
   direction: rtl;
   text-decoration: none;
+  transition: transform var(--hover_transtion);
 }
 
 .PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):hover,

@@ -12,8 +12,8 @@ function PurpleBanner({utmSource}) {
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState([]);
   const [isFirstLoading, setFirstLoading] = useState(true);
-  const [currentEvent, setCurrentEvent] = useState(1);
-  const [absoluteSlideNumber, setAbsoluteSlideNumber] = useState(1);
+  const [currentEvent, setCurrentEvent] = useState(0);
+  const [absoluteSlideNumber, setAbsoluteSlideNumber] = useState(0);
   const [noAnimate, setNoAnimate] = useState(false);
   const containerRef = useRef();
   const timeoutRef = useRef({});
@@ -23,6 +23,7 @@ function PurpleBanner({utmSource}) {
       readEvents()
         .then((events) => {
           setEvents(events);
+          changeSlide(events);
         })
         .catch(() => {
           setEvents([]);
