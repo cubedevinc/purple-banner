@@ -45,6 +45,7 @@ function PurpleBanner({utmSource}) {
           setLoading(false);
         });
     }
+    return () => clearTimeout(timeoutRef.current);
   }, []);
 
   const makeOnClick = (slideNumber) => {
@@ -99,26 +100,31 @@ function PurpleBanner({utmSource}) {
       </>
     );
   } else if (!loading) {
-    slides = <EventLink event={events[0]}utmSource={utmSource} />;
+    slides = <EventLink event={events[0]} utmSource={utmSource} />;
   }
 
   const forceChangeSlide = () => {
     setNoAnimate(true);
-    if (currentEvent === -1) {
-      // если первый виртуальный
-      setCurrentEvent(events.length - 1);
-    } else {
-      setCurrentEvent(0);
-    }
+
+    // there must be used a flushSync from react@18
+    setTimeout(() => {
+      if (currentEvent === -1) {
+        // если первый виртуальный
+        setCurrentEvent(events.length - 1);
+      } else {
+        setCurrentEvent(0);
+      }
+    }, 10)
     setTimeout(() => {
       setNoAnimate(false);
-    }, 0);
+    }, 20)
   };
 
   const changeSlide = (events) => {
     if (currentEvent === events.length || currentEvent === -1) {
       forceChangeSlide();
     }
+    clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
       setCurrentEvent((currentEvent) => (currentEvent + 1) % (events.length + 1));
       setAbsoluteSlideNumber((absoluteSlideNumber) => absoluteSlideNumber + 1);
