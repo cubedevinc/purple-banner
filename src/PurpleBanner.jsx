@@ -8,7 +8,7 @@ import styles from "./PurpleBanner.css";
 
 const cn = classNames.bind(styles);
 
-function PurpleBanner() {
+function PurpleBanner({utmSource}) {
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState([]);
   const [isFirstLoading, setFirstLoading] = useState(true);
@@ -67,12 +67,13 @@ function PurpleBanner() {
   if (events.length > 1 && !loading) {
     slides = (
       <>
-        <EventLink event={events[events.length - 2]} slideNumber={-2} makeOnClick={makeOnClick} />
+        <EventLink event={events[events.length - 2]} slideNumber={-2} makeOnClick={makeOnClick} utmSource={utmSource}/>
         <EventLink
           event={events[events.length - 1]}
           slideNumber={-1}
           makeOnClick={makeOnClick}
           isActive={currentEvent === -1}
+          utmSource={utmSource}
         />
         {events.map((item, index) => {
           return (
@@ -82,6 +83,7 @@ function PurpleBanner() {
               slideNumber={index}
               makeOnClick={makeOnClick}
               isActive={index === currentEvent}
+              utmSource={utmSource}
             />
           );
         })}
@@ -90,12 +92,13 @@ function PurpleBanner() {
           slideNumber={events.length}
           makeOnClick={makeOnClick}
           isActive={events.length === currentEvent}
+          utmSource={utmSource}
         />
-        <EventLink event={events[1]} slideNumber={1} makeOnClick={makeOnClick} />
+        <EventLink event={events[1]} slideNumber={1} makeOnClick={makeOnClick} utmSource={utmSource}/>
       </>
     );
   } else if (!loading) {
-    slides = <EventLink event={events[0]} />;
+    slides = <EventLink event={events[0]}utmSource={utmSource} />;
   }
 
   const forceChangeSlide = () => {

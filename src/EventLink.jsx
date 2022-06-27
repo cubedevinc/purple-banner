@@ -6,7 +6,7 @@ import classNames from "classnames/bind";
 
 const cn = classNames.bind(styles);
 
-function EventLink({ event, slideNumber, makeOnClick, isActive = false }) {
+function EventLink({ event, slideNumber, makeOnClick, isActive = false, utmSource }) {
   let onClick = () => {};
 
   if (makeOnClick) {
@@ -16,7 +16,7 @@ function EventLink({ event, slideNumber, makeOnClick, isActive = false }) {
   return (
     <a
       className={cn("PurpleBanner__link", { "PurpleBanner__link--active": isActive })}
-      href={setUTM(event.link, "blog", event.campaign)}
+      href={setUTM(event.link, utmSource, event.campaign)}
       key={event.id}
       target={"_blank"}
       rel={"noreferrer"}
