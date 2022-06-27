@@ -132,7 +132,7 @@ function PurpleBanner() {
     <div
       className={cn("PurpleBanner", {
         "PurpleBanner--visible": !loading,
-        "PurpleBanner--noAnimate": isFirstLoading,
+        "PurpleBanner--noAnimate": !isFirstLoading,
       })}
       style={{
         "--current": currentEvent,
