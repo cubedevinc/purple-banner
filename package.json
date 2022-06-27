@@ -45,6 +45,7 @@
   },
   "scripts": {
     "build": "rollup --config --environment NODE_ENV:production",
+    "build:preview": "rollup --config --environment NODE_ENV:development",
     "lint": "eslint .eslintrc.js rollup.config.js src/ --fix",
     "pretify": "prettier .eslintrc.js rollup.config.js src/ --write --ignore-path .eslintignore",
     "storybook": "start-storybook -p 6006"
