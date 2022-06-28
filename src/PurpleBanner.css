@@ -2,6 +2,10 @@
   overflow: hidden;
   display: flex;
   align-items: center;
+
+  font-family: "Cera Pro", CeraPro, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,
+  Droid Sans, Helvetica Neue, sans-serif !important;
+
   max-height: 0;
   transition: max-height 0.5s linear, color 0.5s linear;
   color: transparent;
