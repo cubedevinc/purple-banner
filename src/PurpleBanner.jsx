@@ -1,35 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import classNames from "classnames/bind";
 import { loadEvents } from "./lib/contentful.js";
-import { setUTM } from "./lib/link.js";
 import { checkEvents, readEvents, writeEvents } from "./lib/session-storage.js";
+import EventLink from "./EventLink.jsx";
 
-import "./PurpleBanner.css";
+import styles from "./PurpleBanner.css";
 
-function className({ isLoading, isFirstLoading }) {
-  let result = "cubedev-purple-banner";
+const cn = classNames.bind(styles);
 
-  if (!isFirstLoading) {
-    result += " cubedev-purple-banner_no-animation";
-  }
-
-  if (!isLoading) {
-    result += " cubedev-purple-banner_visible";
-  }
-
-  return result;
-}
-
-// eslint-disable-next-line react/prop-types
-function PurpleBanner({ source }) {
-  const [isLoading, setLoading] = useState(true);
-  const [isFirstLoading, setFirstLoading] = useState(true);
+function PurpleBanner({utmSource}) {
+  const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState([]);
+  const [isFirstLoading, setFirstLoading] = useState(true);
+  const [currentEvent, setCurrentEvent] = useState(0);
+  const [absoluteSlideNumber, setAbsoluteSlideNumber] = useState(0);
+  const [noAnimate, setNoAnimate] = useState(false);
+  const containerRef = useRef();
+  const timeoutRef = useRef({});
 
   useEffect(() => {
     if (checkEvents()) {
       readEvents()
         .then((events) => {
           setEvents(events);
+          changeSlide(events);
         })
         .catch(() => {
           setEvents([]);
@@ -51,22 +45,120 @@ function PurpleBanner({ source }) {
           setLoading(false);
         });
     }
+    return () => clearTimeout(timeoutRef.current);
   }, []);
 
+  const makeOnClick = (slideNumber) => {
+    return (event) => {
+      if (slideNumber === currentEvent) {
+        return;
+      }
+      event.preventDefault();
+      setCurrentEvent(slideNumber);
+      if (slideNumber > currentEvent) {
+        setAbsoluteSlideNumber((absoluteSlideNumber) => absoluteSlideNumber + 1);
+      } else {
+        setAbsoluteSlideNumber((absoluteSlideNumber) => absoluteSlideNumber - 1);
+      }
+      clearTimeout(timeoutRef.current);
+    };
+  };
+
+  let slides = null;
+
+  if (events.length > 1 && !loading) {
+    slides = (
+      <>
+        <EventLink event={events[events.length - 2]} slideNumber={-2} makeOnClick={makeOnClick} utmSource={utmSource}/>
+        <EventLink
+          event={events[events.length - 1]}
+          slideNumber={-1}
+          makeOnClick={makeOnClick}
+          isActive={currentEvent === -1}
+          utmSource={utmSource}
+        />
+        {events.map((item, index) => {
+          return (
+            <EventLink
+              key={item.id}
+              event={item}
+              slideNumber={index}
+              makeOnClick={makeOnClick}
+              isActive={index === currentEvent}
+              utmSource={utmSource}
+            />
+          );
+        })}
+        <EventLink
+          event={events[0]}
+          slideNumber={events.length}
+          makeOnClick={makeOnClick}
+          isActive={events.length === currentEvent}
+          utmSource={utmSource}
+        />
+        <EventLink event={events[1]} slideNumber={1} makeOnClick={makeOnClick} utmSource={utmSource}/>
+      </>
+    );
+  } else if (!loading) {
+    slides = <EventLink event={events[0]} utmSource={utmSource} />;
+  }
+
+  const forceChangeSlide = () => {
+    setNoAnimate(true);
+
+    // there must be used a flushSync from react@18
+    setTimeout(() => {
+      if (currentEvent === -1) {
+        // если первый виртуальный
+        setCurrentEvent(events.length - 1);
+      } else {
+        setCurrentEvent(0);
+      }
+    }, 10)
+    setTimeout(() => {
+      setNoAnimate(false);
+    }, 20)
+  };
+
+  const changeSlide = (events) => {
+    if (currentEvent === events.length || currentEvent === -1) {
+      forceChangeSlide();
+    }
+    clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      setCurrentEvent((currentEvent) => (currentEvent + 1) % (events.length + 1));
+      setAbsoluteSlideNumber((absoluteSlideNumber) => absoluteSlideNumber + 1);
+    }, 4000);
+  };
+
+  const handleChangeSlide = (event) => {
+    event.stopPropagation();
+    if (event.target === containerRef.current) {
+      changeSlide(events);
+    }
+  };
+
   return (
-    <div className={className({ isLoading, isFirstLoading })}>
-      {!isLoading &&
-        events.map(({ id, link, message, campaign }) => (
-          <a
-            key={id}
-            className="cubedev-purple-banner__link"
-            href={setUTM(link, source, campaign)}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {message}
-          </a>
-        ))}
+    <div
+      className={cn("PurpleBanner", {
+        "PurpleBanner--visible": !loading,
+        "PurpleBanner--noAnimate": !isFirstLoading,
+      })}
+      style={{
+        "--current": currentEvent,
+        "--absoluteSlideNumber": absoluteSlideNumber,
+      }}
+    >
+      <div
+        className={cn("PurpleBanner__container", {
+          "PurpleBanner__container--noAnimate": noAnimate,
+          "PurpleBanner__container--singleSlide": events.length === 1,
+        })}
+        ref={containerRef}
+        onTransitionEnd={handleChangeSlide}
+      >
+        {slides}
+      </div>
     </div>
   );
 }
