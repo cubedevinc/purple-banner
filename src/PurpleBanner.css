@@ -101,8 +101,8 @@
   transition: transform var(--hover_transtion);
 }
 
-.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):hover,
-.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-visible {
+a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):hover,
+a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-visible {
   text-decoration: none;
   transform: translate(1em);
 }
@@ -111,8 +111,8 @@
   direction: initial;
 }
 
-.PurpleBanner__link--active + .PurpleBanner__link:not(:only-child):hover,
-.PurpleBanner__link--active + .PurpleBanner__link:not(:only-child):focus-visible {
+.PurpleBanner__link--active + a.PurpleBanner__link:not(:only-child):hover,
+.PurpleBanner__link--active + a.PurpleBanner__link:not(:only-child):focus-visible {
   text-decoration: none;
   transform: translate(-1em);
 }
