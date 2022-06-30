@@ -8,7 +8,7 @@ import styles from "./PurpleBanner.css";
 
 const cn = classNames.bind(styles);
 
-function PurpleBanner({ utmSource }) {
+function PurpleBanner({ utmSource, debugMode }) {
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState([]);
   const [isFirstLoading, setFirstLoading] = useState(true);
@@ -37,7 +37,7 @@ function PurpleBanner({ utmSource }) {
           }, 100);
         });
     } else {
-      loadEvents()
+      loadEvents({ debugMode })
         .then((events) => {
           writeEvents(events);
           setEvents(events);
