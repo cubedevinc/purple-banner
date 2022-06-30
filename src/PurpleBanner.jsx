@@ -103,8 +103,10 @@ function PurpleBanner({ utmSource }) {
         <EventLink event={events[1]} slideNumber={1} makeOnClick={makeOnClick} utmSource={utmSource} />
       </>
     );
-  } else if (!loading) {
+  } else if (events.length === 1 && !loading) {
     slides = <EventLink event={events[0]} utmSource={utmSource} />;
+  } else {
+    slides = null;
   }
 
   const forceChangeSlide = () => {
