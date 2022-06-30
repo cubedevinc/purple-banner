@@ -8,7 +8,7 @@ import styles from "./PurpleBanner.css";
 
 const cn = classNames.bind(styles);
 
-function PurpleBanner({utmSource}) {
+function PurpleBanner({ utmSource }) {
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState([]);
   const [isFirstLoading, setFirstLoading] = useState(true);
@@ -32,7 +32,9 @@ function PurpleBanner({utmSource}) {
           setNoAnimate(true);
           setFirstLoading(false);
           setLoading(false);
-          setTimeout(() => {setNoAnimate(false);}, 100);
+          setTimeout(() => {
+            setNoAnimate(false);
+          }, 100);
         });
     } else {
       loadEvents()
@@ -71,7 +73,7 @@ function PurpleBanner({utmSource}) {
   if (events.length > 1 && !loading) {
     slides = (
       <>
-        <EventLink event={events[events.length - 2]} slideNumber={-2} makeOnClick={makeOnClick} utmSource={utmSource}/>
+        <EventLink event={events[events.length - 2]} slideNumber={-2} makeOnClick={makeOnClick} utmSource={utmSource} />
         <EventLink
           event={events[events.length - 1]}
           slideNumber={-1}
@@ -98,7 +100,7 @@ function PurpleBanner({utmSource}) {
           isActive={events.length === currentEvent}
           utmSource={utmSource}
         />
-        <EventLink event={events[1]} slideNumber={1} makeOnClick={makeOnClick} utmSource={utmSource}/>
+        <EventLink event={events[1]} slideNumber={1} makeOnClick={makeOnClick} utmSource={utmSource} />
       </>
     );
   } else if (!loading) {
@@ -115,10 +117,10 @@ function PurpleBanner({utmSource}) {
       } else {
         setCurrentEvent(0);
       }
-    }, 10)
+    }, 10);
     setTimeout(() => {
       setNoAnimate(false);
-    }, 20)
+    }, 20);
   };
 
   const changeSlide = (events) => {
