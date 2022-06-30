@@ -15,7 +15,6 @@ function PurpleBanner({ utmSource, debugMode }) {
   const [currentEvent, setCurrentEvent] = useState(0);
   const [absoluteSlideNumber, setAbsoluteSlideNumber] = useState(0);
   const [noAnimate, setNoAnimate] = useState(false);
-  const containerRef = useRef();
   const timeoutRef = useRef({});
 
   useEffect(() => {
@@ -142,7 +141,7 @@ function PurpleBanner({ utmSource, debugMode }) {
 
   const handleChangeSlide = (event) => {
     event.stopPropagation();
-    if (event.target === containerRef.current) {
+    if (event.target === event.currentTarget) {
       changeSlide(events);
     }
   };
@@ -157,13 +156,13 @@ function PurpleBanner({ utmSource, debugMode }) {
         "--current": currentEvent,
         "--absoluteSlideNumber": absoluteSlideNumber,
       }}
+      onTransitionEnd={handleChangeSlide}
     >
       <div
         className={cn("PurpleBanner__container", {
           "PurpleBanner__container--noAnimate": noAnimate,
           "PurpleBanner__container--singleSlide": events.length === 1,
         })}
-        ref={containerRef}
         onTransitionEnd={handleChangeSlide}
       >
         {slides}
