@@ -3,8 +3,8 @@
   display: flex;
   align-items: center;
 
-  font-family: "Cera Pro", CeraPro, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,
-  Droid Sans, Helvetica Neue, sans-serif !important;
+  font-family: "Cera Pro", CeraPro, CeraPro-Regular, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
+    Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif !important;
 
   max-height: 0;
   transition: max-height 0.5s linear, color 0.5s linear;
@@ -78,8 +78,6 @@
 
   text-decoration-line: underline;
   text-decoration-color: transparent;
-  font-family: "Cera Pro", sans-serif;
-  font-style: normal;
   font-weight: 500;
   font-size: 16px;
   line-height: 26px;
@@ -103,8 +101,8 @@
   transition: transform var(--hover_transtion);
 }
 
-.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):hover,
-.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-visible {
+a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):hover,
+a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-visible {
   text-decoration: none;
   transform: translate(1em);
 }
@@ -113,8 +111,8 @@
   direction: initial;
 }
 
-.PurpleBanner__link--active + .PurpleBanner__link:not(:only-child):hover,
-.PurpleBanner__link--active + .PurpleBanner__link:not(:only-child):focus-visible {
+.PurpleBanner__link--active + a.PurpleBanner__link:not(:only-child):hover,
+.PurpleBanner__link--active + a.PurpleBanner__link:not(:only-child):focus-visible {
   text-decoration: none;
   transform: translate(-1em);
 }
