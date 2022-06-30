@@ -32,15 +32,18 @@ function parseEvents(rawEvents) {
   }));
 }
 
-async function loadEvents() {
-  const response = await fetch(process.env.CONTENTFUL_API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.CONTENTFUL_AUTH_TOKEN}`,
-    },
-    body: JSON.stringify({ query }),
-  });
+async function loadEvents({ debugMode }) {
+  const response = await fetch(
+    debugMode ? process.env.CONTENTFUL_API_URL_DEVELOPMENT : process.env.CONTENTFUL_API_URL_PRODUCTION,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.CONTENTFUL_AUTH_TOKEN}`,
+      },
+      body: JSON.stringify({ query }),
+    }
+  );
 
   const { data, errors } = await response.json();
 
