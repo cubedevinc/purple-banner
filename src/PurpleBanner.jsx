@@ -46,7 +46,11 @@ function PurpleBanner({ utmSource }) {
           setEvents([]);
         })
         .finally(() => {
+          setNoAnimate(true);
           setLoading(false);
+          setTimeout(() => {
+            setNoAnimate(false);
+          }, 100);
         });
     }
     return () => clearTimeout(timeoutRef.current);
