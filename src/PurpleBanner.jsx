@@ -29,8 +29,10 @@ function PurpleBanner({utmSource}) {
           setEvents([]);
         })
         .finally(() => {
+          setNoAnimate(true);
           setFirstLoading(false);
           setLoading(false);
+          setTimeout(() => {setNoAnimate(false);}, 100);
         });
     } else {
       loadEvents()
@@ -109,7 +111,6 @@ function PurpleBanner({utmSource}) {
     // there must be used a flushSync from react@18
     setTimeout(() => {
       if (currentEvent === -1) {
-        // если первый виртуальный
         setCurrentEvent(events.length - 1);
       } else {
         setCurrentEvent(0);
