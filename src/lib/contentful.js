@@ -17,6 +17,14 @@ const query = `
         message,
         link,
         campaign,
+        event {
+          slug
+          dateTime
+          duration
+          title
+          registerLink
+          zoomWebinarId
+        }
         sys {
           id
         }

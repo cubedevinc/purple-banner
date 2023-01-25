@@ -15,13 +15,15 @@
   --hover_transtion: 0.3s;
 
   position: relative;
+  background-color: #0F0F23;
+  box-shadow: inset 0 -1px 0 #333344;
 }
 
 .PurpleBanner--noAnimate {
   transition: none;
 }
 
-.PurpleBanner::before {
+/* .PurpleBanner::before {
   position: absolute;
   content: "";
   height: 100vw;
@@ -39,13 +41,13 @@
       #9592ff calc(330deg - 10deg),
       #ff76a0 calc(330deg + 10deg)
     );
-  background-position: center;
+   background-position: center;
   transform: rotate(calc(60deg * var(--absoluteSlideNumber) + 90deg));
   transition: transform 1s;
-}
+} */
 
 .PurpleBanner--visible {
-  max-height: 40px;
+  max-height: 48px;
   color: white;
 }
 
@@ -69,15 +71,13 @@
 .PurpleBanner__link {
   width: 45vw;
   flex-grow: 1;
-  padding: 7px;
+  padding: 8px 7px;
   border: none;
   box-sizing: border-box;
 
-  height: 40px;
+  height: 48px;
   margin: 0 2.5vw;
 
-  text-decoration-line: underline;
-  text-decoration-color: transparent;
   font-weight: 500;
   font-size: 16px;
   line-height: 26px;
@@ -85,25 +85,23 @@
   text-align: center;
   letter-spacing: 0.005em;
   opacity: 1;
-  transition: text-decoration-color var(--hover_transtion), opacity 1s, transform 0.3s;
 
   color: inherit;
 
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  text-decoration: none;
 }
 
 .PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child) {
   opacity: 0.4;
   direction: rtl;
-  text-decoration: none;
   transition: transform var(--hover_transtion);
 }
 
 a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):hover,
 a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-visible {
-  text-decoration: none;
   transform: translate(1em);
 }
 
@@ -113,15 +111,58 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
 
 .PurpleBanner__link--active + a.PurpleBanner__link:not(:only-child):hover,
 .PurpleBanner__link--active + a.PurpleBanner__link:not(:only-child):focus-visible {
-  text-decoration: none;
   transform: translate(-1em);
 }
 
 .PurpleBanner__link:hover,
 .PurpleBanner__link:focus-visible {
   color: inherit;
-  text-decoration-color: currentColor;
-  text-decoration-line: underline;
+}
+
+/* event */
+
+.PurpleBanner__event {
+  text-align: center;
+  border-radius: 6px;
+  padding: 3px 12px;
+  transition: background-color 300ms;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.PurpleBanner__link--active:hover .PurpleBanner__event {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.PurpleBanner__event_date {
+  white-space: nowrap;
+  color: #FF83A8;
+  margin-right: 12px;
+}
+
+.PurpleBanner__event_title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.PurpleBanner__event_link {
+  white-space: nowrap;
+  color: #FF83A8;
+  margin-left: 12px;
+  width: 114px;
+}
+
+.PurpleBanner__event--soon {
+  color: #FF7C4A;
+}
+
+.PurpleBanner__event--live {
+  color: #FF4F64;
+}
+
+.PurpleBanner__event_link svg {
+  margin-left: 4px;
 }
 
 @media screen and (max-width: 960px) {
