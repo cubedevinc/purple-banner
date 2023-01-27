@@ -47,18 +47,15 @@ export const EventDetails = ({ event }) => {
       <EventDateTime dateTime={event.dateTime} isLive={isLive} />
       <span className={cn("PurpleBanner__event_title")}>{event.title}</span>
       <span
-        className={cn("PurpleBanner__event_link", {
+        className={cn("PurpleBanner__cta", {
           "PurpleBanner__event--live": isLive,
           "PurpleBanner__event--soon": isSoon,
         })}
       >
-        {isLive ? "Join" : "Register"} Now
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M4.99681 0.399902L3.98881 1.3919L6.82081 4.2239L5.73281 4.1919H0.580811V5.6479L5.73281 5.6319L6.83681 5.5999L3.98881 8.4479L4.99681 9.4399L9.34881 5.0879V4.7519L4.99681 0.399902Z"
-            fill="currentColor"
-          />
-        </svg>
+        {isLive ? "Join" : "Register"} now
+        <svg width="10" height="10" fill="none" xmlns="http://www.w3.org/2000/svg"><path
+          d="m5 .4-1.01 1 2.83 2.82-1.09-.03H.58v1.46l5.15-.02 1.1-.03L4 8.45l1 .99 4.36-4.35v-.34L5 .4Z"
+          fill="currentColor"/></svg>
       </span>
     </div>
   );

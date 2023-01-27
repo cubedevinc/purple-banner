@@ -13,7 +13,6 @@ function PurpleBanner({ utmSource, debugMode }) {
   const [events, setEvents] = useState([]);
   const [isFirstLoading, setFirstLoading] = useState(true);
   const [currentEvent, setCurrentEvent] = useState(0);
-  const [absoluteSlideNumber, setAbsoluteSlideNumber] = useState(0);
   const [noAnimate, setNoAnimate] = useState(false);
   const timeoutRef = useRef({});
 
@@ -62,11 +61,6 @@ function PurpleBanner({ utmSource, debugMode }) {
       }
       event.preventDefault();
       setCurrentEvent(slideNumber);
-      if (slideNumber > currentEvent) {
-        setAbsoluteSlideNumber((absoluteSlideNumber) => absoluteSlideNumber + 1);
-      } else {
-        setAbsoluteSlideNumber((absoluteSlideNumber) => absoluteSlideNumber - 1);
-      }
       clearTimeout(timeoutRef.current);
     };
   };
@@ -76,7 +70,11 @@ function PurpleBanner({ utmSource, debugMode }) {
   if (events.length > 1 && !loading) {
     slides = (
       <>
-        <EventLink event={events[events.length - 2]} slideNumber={-2} makeOnClick={makeOnClick} utmSource={utmSource} />
+        <EventLink
+          event={events[events.length - 2]}
+          slideNumber={-2}
+          makeOnClick={makeOnClick}
+          utmSource={utmSource} />
         <EventLink
           event={events[events.length - 1]}
           slideNumber={-1}
@@ -103,7 +101,11 @@ function PurpleBanner({ utmSource, debugMode }) {
           isActive={events.length === currentEvent}
           utmSource={utmSource}
         />
-        <EventLink event={events[1]} slideNumber={1} makeOnClick={makeOnClick} utmSource={utmSource} />
+        <EventLink
+          event={events[1]}
+          slideNumber={1}
+          makeOnClick={makeOnClick}
+          utmSource={utmSource} />
       </>
     );
   } else if (events.length === 1 && !loading) {
@@ -135,7 +137,6 @@ function PurpleBanner({ utmSource, debugMode }) {
     clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
       setCurrentEvent((currentEvent) => (currentEvent + 1) % (events.length + 1));
-      setAbsoluteSlideNumber((absoluteSlideNumber) => absoluteSlideNumber + 1);
     }, 4000);
   };
 
@@ -154,7 +155,6 @@ function PurpleBanner({ utmSource, debugMode }) {
       })}
       style={{
         "--current": currentEvent,
-        "--absoluteSlideNumber": absoluteSlideNumber,
       }}
       onTransitionEnd={handleChangeSlide}
     >
