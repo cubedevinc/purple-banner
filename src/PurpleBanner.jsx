@@ -137,7 +137,7 @@ function PurpleBanner({ utmSource, debugMode }) {
     clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
       setCurrentEvent((currentEvent) => (currentEvent + 1) % (events.length + 1));
-    }, 4000000);
+    }, 4000);
   };
 
   const handleChangeSlide = (event) => {

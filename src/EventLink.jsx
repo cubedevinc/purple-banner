@@ -11,7 +11,10 @@ export function EventDateTime({ dateTime, isLive }) {
   const d = dayjs(dateTime);
 
   if (isLive) {
-    return <span className={cn("PurpleBanner__event_date", "PurpleBanner__event--live")}>Live</span>;
+    return <span className={cn("PurpleBanner__event_date", "PurpleBanner__event--live")}>
+      <span className={cn("PurpleBanner__event_live")}/>
+      Live
+    </span>;
   }
 
   const h = d.diff(Date.now(), "hour");
