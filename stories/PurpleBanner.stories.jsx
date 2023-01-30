@@ -18,7 +18,19 @@ export default {
   },
 };
 
-writeEvents([
+writeEvents([ {
+  message: "event 5",
+  link: "https://example.com/event/5",
+  campaign: "3",
+  id: 6,
+  event: {
+    slug: "event",
+    title: "fire event",
+    zoomWebinarId: "123",
+    dateTime: dayjs().add(1, "hour").toString(),
+    duration: 12,
+  },
+},
   {
     message: "event 1",
     link: "https://example.com/event/1",
@@ -69,6 +81,7 @@ writeEvents([
       duration: 12,
     },
   },
+
 ]);
 
 export const PurpleBanner = () => <Component debugMode />;

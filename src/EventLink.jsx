@@ -24,6 +24,7 @@ export function EventDateTime({ dateTime, isLive }) {
     const m = d.diff(Date.now(), "minutes");
     return (
       <span className={cn("PurpleBanner__event_date", "PurpleBanner__event--soon")}>
+        <span className={cn("PurpleBanner__event_fire")}/>
         In {m} {m === 1 ? "minute" : "minutes"}
       </span>
     );
@@ -31,6 +32,7 @@ export function EventDateTime({ dateTime, isLive }) {
 
   return (
     <span className={cn("PurpleBanner__event_date", "PurpleBanner__event--soon")}>
+      <span className={cn("PurpleBanner__event_fire")}/>
       In {h} {h === 1 ? "hour" : "hours"}
     </span>
   );
