@@ -20,6 +20,12 @@ export default {
 
 writeEvents([
   {
+    message: "legacy banner without linked event",
+    link: "https://example.com/event/1",
+    campaign: "1",
+    id: 2,
+  },
+  {
     message: "event 1",
     link: "https://example.com/event/1",
     campaign: "1",
