@@ -145,6 +145,7 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
 
 .PurpleBanner__event_date {
   white-space: nowrap;
+  display: inline;
   color: #FF83A8;
   margin-right: 12px;
 }
@@ -175,12 +176,27 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
 }
 
 @media screen and (max-width: 960px) {
+  .PurpleBanner__event {
+    display: inline-block;
+    text-align: center;
+    padding: 0;
+  }
+
   .PurpleBanner__link {
     width: 100vw;
+    box-sizing: border-box;
     white-space: initial;
     margin: 0;
     display: flex;
     align-items: center;
+  }
+
+  .PurpleBanner__event_date {
+    margin-right: 8px;
+  }
+
+  .PurpleBanner__cta {
+    margin-left: 8px;
   }
 
   .PurpleBanner__container:not(.PurpleBanner__container--singleSlide) {
