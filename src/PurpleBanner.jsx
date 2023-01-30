@@ -9,6 +9,7 @@ import styles from "./PurpleBanner.css";
 const cn = classNames.bind(styles);
 
 function PurpleBanner({ utmSource, debugMode }) {
+  const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState([]);
   const [isFirstLoading, setFirstLoading] = useState(true);
@@ -17,42 +18,50 @@ function PurpleBanner({ utmSource, debugMode }) {
   const timeoutRef = useRef({});
 
   useEffect(() => {
-    if (checkEvents()) {
-      readEvents()
-        .then((events) => {
-          setEvents(events);
-          changeSlide(events);
-        })
-        .catch(() => {
-          setEvents([]);
-        })
-        .finally(() => {
-          setNoAnimate(true);
-          setFirstLoading(false);
-          setLoading(false);
-          setTimeout(() => {
-            setNoAnimate(false);
-          }, 100);
-        });
-    } else {
-      loadEvents({ debugMode })
-        .then((events) => {
-          writeEvents(events);
-          setEvents(events);
-        })
-        .catch(() => {
-          setEvents([]);
-        })
-        .finally(() => {
-          setNoAnimate(true);
-          setLoading(false);
-          setTimeout(() => {
-            setNoAnimate(false);
-          }, 100);
-        });
+    if (!navigator.userAgent.includes("Googlebot")) {
+      setShow(true);
+
+      if (checkEvents()) {
+        readEvents()
+          .then((events) => {
+            setEvents(events);
+            changeSlide(events);
+          })
+          .catch(() => {
+            setEvents([]);
+          })
+          .finally(() => {
+            setNoAnimate(true);
+            setFirstLoading(false);
+            setLoading(false);
+            setTimeout(() => {
+              setNoAnimate(false);
+            }, 100);
+          });
+      } else {
+        loadEvents({ debugMode })
+          .then((events) => {
+            writeEvents(events);
+            setEvents(events);
+          })
+          .catch(() => {
+            setEvents([]);
+          })
+          .finally(() => {
+            setNoAnimate(true);
+            setLoading(false);
+            setTimeout(() => {
+              setNoAnimate(false);
+            }, 100);
+          });
+      }
     }
     return () => clearTimeout(timeoutRef.current);
   }, []);
+
+  if (!show) {
+    return null;
+  }
 
   const makeOnClick = (slideNumber) => {
     return (event) => {
@@ -74,7 +83,8 @@ function PurpleBanner({ utmSource, debugMode }) {
           event={events[events.length - 2]}
           slideNumber={-2}
           makeOnClick={makeOnClick}
-          utmSource={utmSource} />
+          utmSource={utmSource}
+        />
         <EventLink
           event={events[events.length - 1]}
           slideNumber={-1}
@@ -105,7 +115,8 @@ function PurpleBanner({ utmSource, debugMode }) {
           event={events[1]}
           slideNumber={1}
           makeOnClick={makeOnClick}
-          utmSource={utmSource} />
+          utmSource={utmSource}
+        />
       </>
     );
   } else if (events.length === 1 && !loading) {
@@ -136,7 +147,9 @@ function PurpleBanner({ utmSource, debugMode }) {
     }
     clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
-      setCurrentEvent((currentEvent) => (currentEvent + 1) % (events.length + 1));
+      setCurrentEvent(
+        (currentEvent) => (currentEvent + 1) % (events.length + 1)
+      );
     }, 4000);
   };
 
