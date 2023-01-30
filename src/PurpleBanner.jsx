@@ -59,10 +59,6 @@ function PurpleBanner({ utmSource, debugMode }) {
     return () => clearTimeout(timeoutRef.current);
   }, []);
 
-  if (!show) {
-    return null;
-  }
-
   const makeOnClick = (slideNumber) => {
     return (event) => {
       if (slideNumber === currentEvent) {
@@ -159,6 +155,10 @@ function PurpleBanner({ utmSource, debugMode }) {
       changeSlide(events);
     }
   };
+
+  if (!show) {
+    return null;
+  }
 
   return (
     <div
