@@ -1,5 +1,5 @@
-import { EventBanner, RawEventBanner } from "../types.js";
-import { getISODate } from "./date.js";
+import { EventBanner, RawEventBanner } from "../types";
+import { getISODate } from "./date";
 
 const currentISODate = getISODate();
 

@@ -1,10 +1,10 @@
 import * as React from "react";
 import { type FC, useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
-import { loadEvents } from "./lib/contentful.js";
-import { checkEvents, readEvents, writeEvents } from "./lib/session-storage.js";
+import { loadEvents } from "./lib/contentful";
+import { checkEvents, readEvents, writeEvents } from "./lib/session-storage";
 import EventLink from "./EventLink";
-import type { EventBanner, MakeOnClick } from "./types.js";
+import type { EventBanner, MakeOnClick } from "./types";
 
 // @ts-ignore
 import styles from "./PurpleBanner.css";

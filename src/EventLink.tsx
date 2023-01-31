@@ -1,7 +1,7 @@
 import * as React from "react";
 import type { FC } from "react";
 import dayjs from "dayjs";
-import { setUTM } from "./lib/link.js";
+import { setUTM } from "./lib/link";
 // @ts-ignore
 import styles from "./PurpleBanner.css";
 import type { EventBanner, Event, MakeOnClick } from "./types";

@@ -1,4 +1,4 @@
-import { getDate } from "./date.js";
+import { getDate } from "./date";
 
 function checkEvents() {
   return window?.sessionStorage?.getItem(

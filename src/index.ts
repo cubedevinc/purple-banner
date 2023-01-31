@@ -1,1 +1,1 @@
-export { PurpleBanner as default } from "./PurpleBanner.jsx";
+export { PurpleBanner as default } from "./PurpleBanner";

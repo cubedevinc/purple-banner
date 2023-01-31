@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import dayjs from "dayjs";
 import { EventLink as Component } from "../src/EventLink";
@@ -98,7 +99,13 @@ export const Default = () => (
         },
       },
     ].map((event, i) => (
-      <Component key={i} slideNumber={1} isActive={true} utmSource="utm" event={event} />
+      <Component
+        key={i}
+        slideNumber={1}
+        isActive={true}
+        utmSource="utm"
+        event={event}
+      />
     ))}
   </BannerPreview>
 );
