@@ -102,22 +102,27 @@ export interface EventLinkProps {
   event: EventBanner;
   slideNumber: number;
   makeOnClick?: MakeOnClick;
+  onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   isActive?: boolean;
   utmSource: string;
+  className?: string;
 }
 
 export const EventLink: FC<EventLinkProps> = ({
   event,
   slideNumber,
   makeOnClick,
+  onClick: onClickHandler,
   isActive = false,
   utmSource,
+  className,
 }) => {
-  const onClick = makeOnClick ? makeOnClick(slideNumber) : () => {};
+  const onClick =
+    onClickHandler || (makeOnClick ? makeOnClick(slideNumber) : () => {});
 
   return (
     <a
-      className={cn("PurpleBanner__link", {
+      className={cn("PurpleBanner__link", className, {
         "PurpleBanner__link--active": isActive,
       })}
       href={setUTM(event.link, utmSource, event.campaign)}

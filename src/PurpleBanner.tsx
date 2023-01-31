@@ -1,11 +1,18 @@
 import * as React from "react";
-import { type FC, useEffect, useReducer, useRef, useState } from "react";
+import {
+  type FC,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import classNames from "classnames/bind";
 import { loadEvents } from "./lib/contentful";
 import { checkEvents, readEvents, writeEvents } from "./lib/session-storage";
 import EventLink from "./EventLink";
 import type { MakeOnClick } from "./types";
-import { bannerStateReducer, initialState, withLogger } from "./lib/state";
+import { bannerStateReducer, initialState } from "./lib/state";
 
 // @ts-ignore
 import styles from "./PurpleBanner.css";
@@ -17,30 +24,45 @@ export interface PurpleBannerProps {
   debugMode?: boolean;
 }
 
-const IdleDuration = 4000;
+const IdleDuration = 1000;
 
 export const PurpleBanner: FC<PurpleBannerProps> = ({
   utmSource,
   debugMode,
 }) => {
   const [show, setShow] = useState(false);
-  const [state, dispatch] = useReducer(
-    withLogger(bannerStateReducer),
-    initialState
-  );
+  const [state, dispatch] = useReducer(bannerStateReducer, initialState);
   const timeout = useRef<NodeJS.Timer>();
 
-  const nextSlide = (first?: boolean) => {
-    clearTimeout(timeout.current);
-    if (first) {
-      timeout.current = setTimeout(
-        () => dispatch({ type: "next-slide" }),
-        IdleDuration
-      );
+  const goToSlide = (i: number, noAnimate?: boolean) =>
+    dispatch({ type: "go-to-slide", slide: i, noAnimate });
+
+  const goLast = useCallback(() => {
+    goToSlide(state.slides.length, true);
+    setTimeout(() => goToSlide(state.slides.length - 1), 10);
+  }, [state.slides.length]);
+
+  const goNext = useCallback(() => {
+    if (state.currentSlide === state.slides.length - 1) {
+      goFirst();
     } else {
       dispatch({ type: "next-slide" });
     }
+  }, [state.slides.length, state.currentSlide]);
+
+  const nextSlide = (delay?: boolean) => {
+    clearTimeout(timeout.current);
+    if (delay) {
+      timeout.current = setTimeout(() => goNext(), IdleDuration);
+    } else {
+      goNext();
+    }
   };
+
+  const goFirst = useCallback(() => {
+    goToSlide(-1, true);
+    setTimeout(() => goToSlide(0), 10);
+  }, [state.slides.length]);
 
   useEffect(() => {
     const hide = navigator.userAgent.includes("Googlebot");
@@ -72,11 +94,11 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
   const makeOnClick: MakeOnClick = React.useCallback(
     (slideNumber: number) => {
       return (event) => {
+        event.preventDefault();
         if (slideNumber === state.currentSlide) {
           return;
         }
-        event.preventDefault();
-        nextSlide();
+        goToSlide(slideNumber);
       };
     },
     [state.currentSlide]
@@ -88,18 +110,21 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
     slides = (
       <>
         <EventLink
-          event={state.slides[state.previousSlide]}
+          event={state.slides[state.slides.length - 2]}
           slideNumber={-2}
-          makeOnClick={makeOnClick}
           utmSource={utmSource}
         />
         <EventLink
           event={state.slides[state.slides.length - 1]}
           slideNumber={-1}
-          makeOnClick={makeOnClick}
-          isActive={state.previousSlide === state.slides.length - 1}
+          onClick={(e) => {
+            e.preventDefault();
+            goLast();
+          }}
+          isActive={state.currentSlide === state.slides.length - 1}
           utmSource={utmSource}
         />
+
         {state.slides.map((item, index) => {
           return (
             <EventLink
@@ -112,17 +137,20 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
             />
           );
         })}
+
         <EventLink
           event={state.slides[0]}
-          slideNumber={state.slides.length}
-          makeOnClick={makeOnClick}
-          isActive={state.nextSlide === 0}
+          slideNumber={0}
+          onClick={(e) => {
+            e.preventDefault();
+            goFirst();
+          }}
+          isActive={state.currentSlide === 0}
           utmSource={utmSource}
         />
         <EventLink
           event={state.slides[1]}
           slideNumber={1}
-          makeOnClick={makeOnClick}
           utmSource={utmSource}
         />
       </>
@@ -152,11 +180,13 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
     return null;
   }
 
+  const noAnimate = !state.booted || state.noAnimate;
+
   return (
     <div
       className={cn("PurpleBanner", {
         "PurpleBanner--visible": state.state !== "loading",
-        "PurpleBanner--noAnimate": !state.booted,
+        "PurpleBanner--noAnimate": noAnimate,
       })}
       style={
         {
@@ -167,7 +197,7 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
     >
       <div
         className={cn("PurpleBanner__container", {
-          "PurpleBanner__container--noAnimate": !state.booted,
+          "PurpleBanner__container--noAnimate": noAnimate,
           "PurpleBanner__container--singleSlide": state.slides.length === 1,
         })}
         onTransitionEnd={handleChangeSlide}

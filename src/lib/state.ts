@@ -21,26 +21,28 @@ export type BannerState = "loading" | "transitioning" | "idle";
 export interface State {
   state: BannerState;
   booted: boolean;
+  noAnimate: boolean;
   slides: EventBanner[];
+  prevSlide: number;
   currentSlide: number;
-  previousSlide: number;
   nextSlide: number;
-  nextSlide2: number;
 }
 
 export const initialState: State = {
   state: "loading",
   booted: false,
+  noAnimate: false,
   slides: [],
+  prevSlide: 0,
   currentSlide: 0,
-  previousSlide: 0,
   nextSlide: 0,
-  nextSlide2: 0,
 };
 
 export type BannerActions =
   | "load"
   | "slides-loaded"
+  | "prev-slide"
+  | "go-to-slide"
   | "next-slide"
   | "finish-transition";
 
@@ -57,6 +59,12 @@ export interface ActionSlidesLoaded extends Action {
   payload: EventBanner[];
 }
 
+export interface ActionGoToSlide extends Action {
+  type: "go-to-slide";
+  slide: number;
+  noAnimate?: boolean;
+}
+
 export interface ActionNextSlide extends Action {
   type: "next-slide";
 }
@@ -68,9 +76,20 @@ export interface ActionFinishTransition extends Action {
 export type Actions =
   | ActionLoad
   | ActionSlidesLoaded
+  | ActionGoToSlide
   | ActionNextSlide
   | ActionFinishTransition;
 
+function getSlides(
+  current: number,
+  length: number
+): Pick<State, "currentSlide" | "prevSlide" | "nextSlide"> {
+  return {
+    prevSlide: (length + current - 1) % length,
+    currentSlide: current,
+    nextSlide: (length + current + 1) % length,
+  };
+}
 export const bannerStateReducer: Reducer<State, Actions> = (state, action) => {
   switch (action.type) {
     case "load":
@@ -86,10 +105,7 @@ export const bannerStateReducer: Reducer<State, Actions> = (state, action) => {
           ...state,
           state: "idle",
           slides,
-          currentSlide: 0,
-          previousSlide: slides.length - 1,
-          nextSlide: 1,
-          nextSlide2: 2 % slides.length,
+          ...getSlides(0, slides.length),
         };
       }
       return {
@@ -98,15 +114,21 @@ export const bannerStateReducer: Reducer<State, Actions> = (state, action) => {
         slides,
       };
 
+    case "go-to-slide":
+      return {
+        ...state,
+        state: "transitioning",
+        booted: true,
+        noAnimate: !!action.noAnimate,
+        ...getSlides(action.slide, state.slides.length),
+      };
+
     case "next-slide":
       return {
         ...state,
         state: "transitioning",
         booted: true,
-        previousSlide: state.currentSlide,
-        currentSlide: (state.currentSlide + 1) % state.slides.length,
-        nextSlide: (state.currentSlide + 2) % state.slides.length,
-        nextSlide2: (state.currentSlide + 3) % state.slides.length,
+        ...getSlides(state.currentSlide + 1, state.slides.length),
       };
 
     case "finish-transition":
@@ -118,16 +140,4 @@ export const bannerStateReducer: Reducer<State, Actions> = (state, action) => {
     default:
       return state;
   }
-};
-
-export const withLogger: (
-  reducer: Reducer<State, Actions>
-) => Reducer<State, Actions> = (reducer) => (state, action) => {
-  console.log(action, state);
-
-  const next = reducer(state, action);
-
-  console.log(action, next);
-
-  return next;
 };

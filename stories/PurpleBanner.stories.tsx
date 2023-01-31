@@ -124,14 +124,16 @@ export const LegacyEvents = withEvents(
 
 export const ThreeEvents = withEvents(
   () => <Component debugMode />,
-  [1, 2, 3].map((i) => ({
+  [1, 2, 3, 4, 5, 6].map((i) => ({
     link: "https://example.com/event/1",
     campaign: "utm",
     id: i,
     event: {
       slug: i,
       title: `event ${i}`,
-      dateTime: dayjs().add(5, "day").toString(),
+      dateTime: dayjs()
+        .add(5 + i, "day")
+        .toString(),
       duration: 1,
     },
   }))
