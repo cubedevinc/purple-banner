@@ -1,21 +1,32 @@
-import React, { useEffect, useRef, useState } from "react";
+import * as React from "react";
+import { type FC, useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import { loadEvents } from "./lib/contentful.js";
 import { checkEvents, readEvents, writeEvents } from "./lib/session-storage.js";
-import EventLink from "./EventLink.jsx";
+import EventLink from "./EventLink";
+import type { EventBanner, MakeOnClick } from "./types.js";
 
+// @ts-ignore
 import styles from "./PurpleBanner.css";
 
 const cn = classNames.bind(styles);
 
-function PurpleBanner({ utmSource, debugMode }) {
+export interface PurpleBannerProps {
+  utmSource: string;
+  debugMode?: boolean;
+}
+
+export const PurpleBanner: FC<PurpleBannerProps> = ({
+  utmSource,
+  debugMode,
+}) => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<EventBanner[]>([]);
   const [isFirstLoading, setFirstLoading] = useState(true);
   const [currentEvent, setCurrentEvent] = useState(0);
   const [noAnimate, setNoAnimate] = useState(false);
-  const timeoutRef = useRef({});
+  const timeoutRef = useRef<NodeJS.Timer>();
 
   useEffect(() => {
     if (!navigator.userAgent.includes("Googlebot")) {
@@ -59,7 +70,7 @@ function PurpleBanner({ utmSource, debugMode }) {
     return () => clearTimeout(timeoutRef.current);
   }, []);
 
-  const makeOnClick = (slideNumber) => {
+  const makeOnClick: MakeOnClick = (slideNumber: number) => {
     return (event) => {
       if (slideNumber === currentEvent) {
         return;
@@ -116,6 +127,7 @@ function PurpleBanner({ utmSource, debugMode }) {
       </>
     );
   } else if (events.length === 1 && !loading) {
+    // @ts-ignore
     slides = <EventLink event={events[0]} utmSource={utmSource} />;
   } else {
     slides = null;
@@ -137,7 +149,7 @@ function PurpleBanner({ utmSource, debugMode }) {
     }, 20);
   };
 
-  const changeSlide = (events) => {
+  const changeSlide = (events: EventBanner[]) => {
     if (currentEvent === events.length || currentEvent === -1) {
       forceChangeSlide();
     }
@@ -149,7 +161,9 @@ function PurpleBanner({ utmSource, debugMode }) {
     }, 4000);
   };
 
-  const handleChangeSlide = (event) => {
+  const handleChangeSlide: React.TransitionEventHandler<HTMLDivElement> = (
+    event
+  ) => {
     event.stopPropagation();
     if (event.target === event.currentTarget) {
       changeSlide(events);
@@ -166,9 +180,11 @@ function PurpleBanner({ utmSource, debugMode }) {
         "PurpleBanner--visible": !loading,
         "PurpleBanner--noAnimate": !isFirstLoading,
       })}
-      style={{
-        "--current": currentEvent,
-      }}
+      style={
+        {
+          "--current": currentEvent,
+        } as React.CSSProperties
+      }
       onTransitionEnd={handleChangeSlide}
     >
       <div
@@ -182,6 +198,4 @@ function PurpleBanner({ utmSource, debugMode }) {
       </div>
     </div>
   );
-}
-
-export { PurpleBanner };
+};

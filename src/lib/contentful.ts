@@ -1,3 +1,4 @@
+import { EventBanner, RawEventBanner } from "../types.js";
 import { getISODate } from "./date.js";
 
 const currentISODate = getISODate();
@@ -33,16 +34,19 @@ const query = `
   }
 `;
 
-function parseEvents(rawEvents) {
-  return rawEvents.map(({ sys, ...rest }) => ({
+function parseEvents(rawEvents: RawEventBanner[]): EventBanner[] {
+  return rawEvents.map(({ sys, ...rest }: any) => ({
     ...rest,
     id: sys.id,
   }));
 }
 
-async function loadEvents({ debugMode }) {
+async function loadEvents({ debugMode }: { debugMode?: boolean }) {
   const response = await fetch(
-    debugMode ? process.env.CONTENTFUL_API_URL_DEVELOPMENT : process.env.CONTENTFUL_API_URL_PRODUCTION,
+    // @ts-ignore
+    debugMode
+      ? process.env.CONTENTFUL_API_URL_DEVELOPMENT
+      : process.env.CONTENTFUL_API_URL_PRODUCTION,
     {
       method: "POST",
       headers: {
@@ -53,7 +57,14 @@ async function loadEvents({ debugMode }) {
     }
   );
 
-  const { data, errors } = await response.json();
+  const { data, errors } = (await response.json()) as {
+    data: {
+      purpleBannerCollection: {
+        items: RawEventBanner[];
+      };
+    };
+    errors: any;
+  };
 
   if (errors) {
     throw errors;
