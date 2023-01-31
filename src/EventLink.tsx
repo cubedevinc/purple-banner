@@ -1,6 +1,6 @@
 import * as React from "react";
-import type { FC, MouseEventHandler } from "react";
-import * as dayjs from "dayjs";
+import type { FC } from "react";
+import dayjs from "dayjs";
 import { setUTM } from "./lib/link.js";
 // @ts-ignore
 import styles from "./PurpleBanner.css";

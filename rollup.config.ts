@@ -1,29 +1,28 @@
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-import { terser } from "rollup-plugin-terser";
-import styles from "rollup-plugin-styles";
+import terser from "@rollup/plugin-terser";
+import postcss from "rollup-plugin-postcss";
 import dotenv from "rollup-plugin-dotenv";
 import typescript from "@rollup/plugin-typescript";
-
-import packageJson from "./package.json";
 
 export default {
   input: "src/index.ts",
   output: [
     {
-      file: packageJson.main,
+      file: "dist/cjs/index.js",
       format: "cjs",
       exports: "default",
     },
   ],
   plugins: [
-    dotenv({ preventAssignment: true }),
+    // @ts-ignore
+    dotenv.default(),
     resolve(),
     commonjs({
       include: "node_modules/**",
     }),
     typescript(),
-    styles(),
+    postcss(),
     terser(),
   ],
   external: ["react", "react-dom"],
