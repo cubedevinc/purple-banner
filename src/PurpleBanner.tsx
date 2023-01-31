@@ -1,18 +1,11 @@
 import * as React from "react";
-import {
-  type FC,
-  useEffect,
-  useReducer,
-  useRef,
-  useState,
-  useCallback,
-} from "react";
+import { type FC, useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import { loadEvents } from "./lib/contentful";
 import { checkEvents, readEvents, writeEvents } from "./lib/session-storage";
 import EventLink from "./EventLink";
 import type { MakeOnClick } from "./types";
-import { bannerStateReducer, initialState } from "./lib/state";
+import { useSlides } from "./lib/state";
 
 // @ts-ignore
 import styles from "./PurpleBanner.css";
@@ -24,45 +17,22 @@ export interface PurpleBannerProps {
   debugMode?: boolean;
 }
 
-const IdleDuration = 1000;
+const IdleDuration = 4000;
 
 export const PurpleBanner: FC<PurpleBannerProps> = ({
   utmSource,
   debugMode,
 }) => {
   const [show, setShow] = useState(false);
-  const [state, dispatch] = useReducer(bannerStateReducer, initialState);
-  const timeout = useRef<NodeJS.Timer>();
-
-  const goToSlide = (i: number, noAnimate?: boolean) =>
-    dispatch({ type: "go-to-slide", slide: i, noAnimate });
-
-  const goLast = useCallback(() => {
-    goToSlide(state.slides.length, true);
-    setTimeout(() => goToSlide(state.slides.length - 1), 10);
-  }, [state.slides.length]);
-
-  const goNext = useCallback(() => {
-    if (state.currentSlide === state.slides.length - 1) {
-      goFirst();
-    } else {
-      dispatch({ type: "next-slide" });
-    }
-  }, [state.slides.length, state.currentSlide]);
-
-  const nextSlide = (delay?: boolean) => {
-    clearTimeout(timeout.current);
-    if (delay) {
-      timeout.current = setTimeout(() => goNext(), IdleDuration);
-    } else {
-      goNext();
-    }
-  };
-
-  const goFirst = useCallback(() => {
-    goToSlide(-1, true);
-    setTimeout(() => goToSlide(0), 10);
-  }, [state.slides.length]);
+  const {
+    state,
+    dispatch,
+    nextSlide,
+    resetTimeout,
+    goToSlide,
+    goLast,
+    goFirst,
+  } = useSlides(IdleDuration);
 
   useEffect(() => {
     const hide = navigator.userAgent.includes("Googlebot");
@@ -88,7 +58,7 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
         );
     }
 
-    return () => clearTimeout(timeout.current);
+    return () => resetTimeout();
   }, []);
 
   const makeOnClick: MakeOnClick = React.useCallback(

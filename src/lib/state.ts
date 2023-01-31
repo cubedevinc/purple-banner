@@ -1,21 +1,6 @@
-import type { Reducer } from "react";
+import { type Reducer, useReducer, useCallback, useRef } from "react";
 import type { EventBanner } from "../types";
 
-/**
- * <root>
- *  |\
- *  | \(no stored data)
- *  |  \
- *  |  loading
- *  | /
- *  |/
- * idle _________
- *  |             \
- *  |              \
- *  | (next slide) /
- *  |             /
- * transitioning--
- */
 export type BannerState = "loading" | "transitioning" | "idle";
 
 export interface State {
@@ -140,4 +125,56 @@ export const bannerStateReducer: Reducer<State, Actions> = (state, action) => {
     default:
       return state;
   }
+};
+
+function tick(handler: () => void) {
+  setTimeout(handler, 10);
+}
+
+export const useSlides = (timeout: number = 4000) => {
+  const [state, dispatch] = useReducer(bannerStateReducer, initialState);
+  const timer = useRef<NodeJS.Timer>();
+
+  const resetTimeout = () => clearTimeout(timer.current);
+
+  const goToSlide = (i: number, noAnimate?: boolean) => {
+    resetTimeout();
+    dispatch({ type: "go-to-slide", slide: i, noAnimate });
+  };
+
+  const goLast = useCallback(() => {
+    goToSlide(state.slides.length, true);
+    tick(() => goToSlide(state.slides.length - 1));
+  }, [state.slides.length]);
+
+  const goFirst = useCallback(() => {
+    goToSlide(-1, true);
+    tick(() => goToSlide(0));
+  }, [state.slides.length]);
+
+  const goNext = useCallback(() => {
+    if (state.currentSlide === state.slides.length - 1) {
+      goFirst();
+    } else {
+      dispatch({ type: "next-slide" });
+    }
+  }, [state.slides.length, state.currentSlide]);
+
+  const nextSlide = (delay?: boolean) => {
+    if (delay) {
+      timer.current = setTimeout(() => goNext(), timeout);
+    } else {
+      goNext();
+    }
+  };
+
+  return {
+    state,
+    dispatch,
+    nextSlide,
+    goToSlide,
+    goLast,
+    goFirst,
+    resetTimeout,
+  };
 };
