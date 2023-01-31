@@ -122,7 +122,41 @@ export const LegacyEvents = withEvents(
   }))
 );
 
-export const ThreeEvents = withEvents(
+export const OneEvent = withEvents(
+  () => <Component debugMode />,
+  [
+    {
+      link: "https://example.com/event/1",
+      campaign: "utm",
+      id: 0,
+      event: {
+        slug: 0,
+        title: `event`,
+        dateTime: dayjs().add(5, "day").toString(),
+        duration: 1,
+      },
+    },
+  ]
+);
+
+export const TwoEvents = withEvents(
+  () => <Component debugMode />,
+  [1, 2].map((i) => ({
+    link: "https://example.com/event/1",
+    campaign: "utm",
+    id: i,
+    event: {
+      slug: i,
+      title: `event ${i}`,
+      dateTime: dayjs()
+        .add(5 + i, "day")
+        .toString(),
+      duration: 1,
+    },
+  }))
+);
+
+export const SixEvents = withEvents(
   () => <Component debugMode />,
   [1, 2, 3, 4, 5, 6].map((i) => ({
     link: "https://example.com/event/1",

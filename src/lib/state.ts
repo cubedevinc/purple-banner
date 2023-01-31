@@ -162,6 +162,7 @@ export const useSlides = (timeout: number = 4000) => {
 
   const nextSlide = (delay?: boolean) => {
     if (delay) {
+      dispatch({ type: "finish-transition" });
       timer.current = setTimeout(() => goNext(), timeout);
     } else {
       goNext();

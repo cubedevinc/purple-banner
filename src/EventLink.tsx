@@ -2,9 +2,9 @@ import * as React from "react";
 import type { FC } from "react";
 import dayjs from "dayjs";
 import { setUTM } from "./lib/link";
+import type { EventBanner, Event } from "./types";
 // @ts-ignore
 import styles from "./PurpleBanner.css";
-import type { EventBanner, Event, MakeOnClick } from "./types";
 
 import classNames from "classnames/bind";
 
@@ -100,8 +100,6 @@ export const EventDetails: FC<EventDetailsProps> = ({ event }) => {
 
 export interface EventLinkProps {
   event: EventBanner;
-  slideNumber: number;
-  makeOnClick?: MakeOnClick;
   onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   isActive?: boolean;
   utmSource: string;
@@ -110,16 +108,11 @@ export interface EventLinkProps {
 
 export const EventLink: FC<EventLinkProps> = ({
   event,
-  slideNumber,
-  makeOnClick,
-  onClick: onClickHandler,
+  onClick,
   isActive = false,
   utmSource,
   className,
 }) => {
-  const onClick =
-    onClickHandler || (makeOnClick ? makeOnClick(slideNumber) : () => {});
-
   return (
     <a
       className={cn("PurpleBanner__link", className, {

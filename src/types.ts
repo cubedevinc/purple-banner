@@ -1,5 +1,3 @@
-import type { MouseEventHandler } from "react";
-
 export interface Event {
   slug: string;
   dateTime: string;
@@ -20,7 +18,3 @@ export interface RawEventBanner extends Omit<EventBanner, "id"> {
     id: string;
   };
 }
-
-export type MakeOnClick = (
-  slideNumber: number
-) => MouseEventHandler<HTMLElement>;
