@@ -1,12 +1,11 @@
 import { type Reducer, useReducer, useCallback, useRef } from "react";
 import type { EventBanner } from "../types";
 
-export type BannerState = "loading" | "transitioning" | "idle";
+export type BannerState = "loading" | "skipping" | "transitioning" | "idle";
 
 export interface State {
   state: BannerState;
   booted: boolean;
-  noAnimate: boolean;
   slides: EventBanner[];
   prevSlide: number;
   currentSlide: number;
@@ -16,7 +15,6 @@ export interface State {
 export const initialState: State = {
   state: "loading",
   booted: false,
-  noAnimate: false,
   slides: [],
   prevSlide: 0,
   currentSlide: 0,
@@ -102,9 +100,8 @@ export const bannerStateReducer: Reducer<State, Actions> = (state, action) => {
     case "go-to-slide":
       return {
         ...state,
-        state: "transitioning",
+        state: action.noAnimate ? "skipping" : "transitioning",
         booted: true,
-        noAnimate: !!action.noAnimate,
         ...getSlides(action.slide, state.slides.length),
       };
 

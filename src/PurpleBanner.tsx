@@ -33,7 +33,7 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
     goFirst,
   } = useSlides(IdleDuration);
 
-  const noAnimate = !state.booted || state.noAnimate;
+  const noAnimate = !state.booted || state.state === "skipping";
   const hasNext = state.slides.length > 0;
 
   const onSlideClick = useCallback(
@@ -82,6 +82,10 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
 
     return () => resetTimeout();
   }, []);
+
+  if (!show) {
+    return null;
+  }
 
   const slides =
     state.state === "loading" ? null : state.slides.length > 1 ? (
