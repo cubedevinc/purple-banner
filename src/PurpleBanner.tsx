@@ -1,10 +1,11 @@
 import * as React from "react";
-import { type FC, useEffect, useRef, useState } from "react";
+import { type FC, useEffect, useReducer, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import { loadEvents } from "./lib/contentful";
 import { checkEvents, readEvents, writeEvents } from "./lib/session-storage";
 import EventLink from "./EventLink";
-import type { EventBanner, MakeOnClick } from "./types";
+import type { MakeOnClick } from "./types";
+import { bannerStateReducer, initialState, withLogger } from "./lib/state";
 
 // @ts-ignore
 import styles from "./PurpleBanner.css";
@@ -16,157 +17,134 @@ export interface PurpleBannerProps {
   debugMode?: boolean;
 }
 
+const IdleDuration = 4000;
+
 export const PurpleBanner: FC<PurpleBannerProps> = ({
   utmSource,
   debugMode,
 }) => {
   const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [events, setEvents] = useState<EventBanner[]>([]);
-  const [isFirstLoading, setFirstLoading] = useState(true);
-  const [currentEvent, setCurrentEvent] = useState(0);
-  const [noAnimate, setNoAnimate] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timer>();
+  const [state, dispatch] = useReducer(
+    withLogger(bannerStateReducer),
+    initialState
+  );
+  const timeout = useRef<NodeJS.Timer>();
+
+  const nextSlide = (first?: boolean) => {
+    clearTimeout(timeout.current);
+    if (first) {
+      timeout.current = setTimeout(
+        () => dispatch({ type: "next-slide" }),
+        IdleDuration
+      );
+    } else {
+      dispatch({ type: "next-slide" });
+    }
+  };
 
   useEffect(() => {
-    if (!navigator.userAgent.includes("Googlebot")) {
+    const hide = navigator.userAgent.includes("Googlebot");
+    if (!hide) {
       setShow(true);
 
-      if (checkEvents()) {
-        readEvents()
-          .then((events) => {
-            setEvents(events);
-            changeSlide(events);
-          })
-          .catch(() => {
-            setEvents([]);
-          })
-          .finally(() => {
-            setNoAnimate(true);
-            setFirstLoading(false);
-            setLoading(false);
-            setTimeout(() => {
-              setNoAnimate(false);
-            }, 100);
+      dispatch({ type: "load" });
+
+      (checkEvents() ? readEvents() : loadEvents({ debugMode }))
+        .then((events) => {
+          writeEvents(events);
+          dispatch({
+            type: "slides-loaded",
+            payload: events,
           });
-      } else {
-        loadEvents({ debugMode })
-          .then((events) => {
-            writeEvents(events);
-            setEvents(events);
+          nextSlide(true);
+        })
+        .catch(() =>
+          dispatch({
+            type: "slides-loaded",
+            payload: [],
           })
-          .catch(() => {
-            setEvents([]);
-          })
-          .finally(() => {
-            setNoAnimate(true);
-            setLoading(false);
-            setTimeout(() => {
-              setNoAnimate(false);
-            }, 100);
-          });
-      }
+        );
     }
-    return () => clearTimeout(timeoutRef.current);
+
+    return () => clearTimeout(timeout.current);
   }, []);
 
-  const makeOnClick: MakeOnClick = (slideNumber: number) => {
-    return (event) => {
-      if (slideNumber === currentEvent) {
-        return;
-      }
-      event.preventDefault();
-      setCurrentEvent(slideNumber);
-      clearTimeout(timeoutRef.current);
-    };
-  };
+  const makeOnClick: MakeOnClick = React.useCallback(
+    (slideNumber: number) => {
+      return (event) => {
+        if (slideNumber === state.currentSlide) {
+          return;
+        }
+        event.preventDefault();
+        nextSlide();
+      };
+    },
+    [state.currentSlide]
+  );
 
   let slides = null;
 
-  if (events.length > 1 && !loading) {
+  if (state.slides.length > 1 && state.state !== "loading") {
     slides = (
       <>
         <EventLink
-          event={events[events.length - 2]}
+          event={state.slides[state.previousSlide]}
           slideNumber={-2}
           makeOnClick={makeOnClick}
           utmSource={utmSource}
         />
         <EventLink
-          event={events[events.length - 1]}
+          event={state.slides[state.slides.length - 1]}
           slideNumber={-1}
           makeOnClick={makeOnClick}
-          isActive={currentEvent === -1}
+          isActive={state.previousSlide === state.slides.length - 1}
           utmSource={utmSource}
         />
-        {events.map((item, index) => {
+        {state.slides.map((item, index) => {
           return (
             <EventLink
               key={item.id}
               event={item}
               slideNumber={index}
               makeOnClick={makeOnClick}
-              isActive={index === currentEvent}
+              isActive={index === state.currentSlide}
               utmSource={utmSource}
             />
           );
         })}
         <EventLink
-          event={events[0]}
-          slideNumber={events.length}
+          event={state.slides[0]}
+          slideNumber={state.slides.length}
           makeOnClick={makeOnClick}
-          isActive={events.length === currentEvent}
+          isActive={state.nextSlide === 0}
           utmSource={utmSource}
         />
         <EventLink
-          event={events[1]}
+          event={state.slides[1]}
           slideNumber={1}
           makeOnClick={makeOnClick}
           utmSource={utmSource}
         />
       </>
     );
-  } else if (events.length === 1 && !loading) {
-    // @ts-ignore
-    slides = <EventLink event={events[0]} utmSource={utmSource} />;
+  } else if (state.slides.length === 1 && state.state !== "loading") {
+    slides = (
+      <EventLink
+        event={state.slides[0]}
+        slideNumber={0}
+        utmSource={utmSource}
+      />
+    );
   } else {
     slides = null;
   }
-
-  const forceChangeSlide = () => {
-    setNoAnimate(true);
-
-    // there must be used a flushSync from react@18
-    setTimeout(() => {
-      if (currentEvent === -1) {
-        setCurrentEvent(events.length - 1);
-      } else {
-        setCurrentEvent(0);
-      }
-    }, 10);
-    setTimeout(() => {
-      setNoAnimate(false);
-    }, 20);
-  };
-
-  const changeSlide = (events: EventBanner[]) => {
-    if (currentEvent === events.length || currentEvent === -1) {
-      forceChangeSlide();
-    }
-    clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => {
-      setCurrentEvent(
-        (currentEvent) => (currentEvent + 1) % (events.length + 1)
-      );
-    }, 4000);
-  };
 
   const handleChangeSlide: React.TransitionEventHandler<HTMLDivElement> = (
     event
   ) => {
     event.stopPropagation();
     if (event.target === event.currentTarget) {
-      changeSlide(events);
+      nextSlide(true);
     }
   };
 
@@ -177,20 +155,20 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
   return (
     <div
       className={cn("PurpleBanner", {
-        "PurpleBanner--visible": !loading,
-        "PurpleBanner--noAnimate": !isFirstLoading,
+        "PurpleBanner--visible": state.state !== "loading",
+        "PurpleBanner--noAnimate": !state.booted,
       })}
       style={
         {
-          "--current": currentEvent,
+          "--current": state.currentSlide,
         } as React.CSSProperties
       }
       onTransitionEnd={handleChangeSlide}
     >
       <div
         className={cn("PurpleBanner__container", {
-          "PurpleBanner__container--noAnimate": noAnimate,
-          "PurpleBanner__container--singleSlide": events.length === 1,
+          "PurpleBanner__container--noAnimate": !state.booted,
+          "PurpleBanner__container--singleSlide": state.slides.length === 1,
         })}
         onTransitionEnd={handleChangeSlide}
       >

@@ -1,27 +1,26 @@
+import type { EventBanner } from "../types";
 import { getDate } from "./date";
 
-function checkEvents() {
+export function checkEvents() {
   return window?.sessionStorage?.getItem(
     `cubedev-event-banner_v2_${getDate()}`
   );
 }
 
-async function readEvents() {
+export async function readEvents() {
   const data = window?.sessionStorage?.getItem(
     `cubedev-event-banner_v2_${getDate()}`
   );
   try {
-    return Promise.resolve(JSON.parse(data!));
+    return Promise.resolve(JSON.parse(data!) as EventBanner[]);
   } catch (error) {
     return Promise.reject(error);
   }
 }
 
-function writeEvents(events: any[]) {
+export function writeEvents(events: EventBanner[]) {
   window?.sessionStorage?.setItem(
     `cubedev-event-banner_v2_${getDate()}`,
     JSON.stringify(events)
   );
 }
-
-export { checkEvents, readEvents, writeEvents };

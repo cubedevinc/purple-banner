@@ -101,7 +101,7 @@ export const EventDetails: FC<EventDetailsProps> = ({ event }) => {
 export interface EventLinkProps {
   event: EventBanner;
   slideNumber: number;
-  makeOnClick: MakeOnClick;
+  makeOnClick?: MakeOnClick;
   isActive?: boolean;
   utmSource: string;
 }

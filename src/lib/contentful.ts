@@ -34,14 +34,14 @@ const query = `
   }
 `;
 
-function parseEvents(rawEvents: RawEventBanner[]): EventBanner[] {
+export function parseEvents(rawEvents: RawEventBanner[]): EventBanner[] {
   return rawEvents.map(({ sys, ...rest }: any) => ({
     ...rest,
     id: sys.id,
   }));
 }
 
-async function loadEvents({ debugMode }: { debugMode?: boolean }) {
+export async function loadEvents({ debugMode }: { debugMode?: boolean }) {
   const response = await fetch(
     // @ts-ignore
     debugMode
@@ -72,5 +72,3 @@ async function loadEvents({ debugMode }: { debugMode?: boolean }) {
 
   return parseEvents(data.purpleBannerCollection.items);
 }
-
-export { loadEvents };
