@@ -31,6 +31,8 @@
     "@storybook/react": "^6.5.16",
     "@storybook/testing-library": "^0.0.13",
     "babel-loader": "^8.2.5",
+    "cssnano": "^5.1.14",
+    "cssnano-preset-advanced": "^5.3.9",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^17.0.0",

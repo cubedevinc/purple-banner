@@ -4,6 +4,8 @@ import terser from "@rollup/plugin-terser";
 import postcss from "rollup-plugin-postcss";
 import dotenv from "rollup-plugin-dotenv";
 import typescript from "@rollup/plugin-typescript";
+import cssnano from "cssnano";
+import presetAdvanced from "cssnano-preset-advanced";
 
 export default {
   input: "src/index.ts",
@@ -23,8 +25,19 @@ export default {
       include: "node_modules/**",
     }),
     typescript(),
-    postcss(),
-    terser(),
+    postcss({
+      plugins: [
+        cssnano({
+          preset: presetAdvanced(),
+        }),
+      ],
+      modules: true,
+      minimize: true,
+    }),
+    terser({
+      compress: true,
+      mangle: true,
+    }),
   ],
   external: ["react", "react-dom"],
 };
