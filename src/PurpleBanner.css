@@ -185,7 +185,6 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
   white-space: nowrap;
   color: #FF83A8;
   margin-left: 12px;
-  width: 114px;
   text-align: left;
 }
 
