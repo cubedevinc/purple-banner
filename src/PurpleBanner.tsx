@@ -136,14 +136,12 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
     <div
       className={cn("PurpleBanner", {
         "PurpleBanner--visible": state.state !== "loading",
-        "PurpleBanner--noAnimate": noAnimate,
       })}
       style={
         {
           "--current": state.currentSlide,
         } as React.CSSProperties
       }
-      onTransitionEnd={hasNext ? handleChangeSlide : () => {}}
     >
       <div
         className={cn("PurpleBanner__container", {
