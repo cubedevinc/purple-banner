@@ -125,7 +125,7 @@ export const bannerStateReducer: Reducer<State, Actions> = (state, action) => {
 };
 
 function tick(handler: () => void) {
-  setTimeout(handler, 10);
+  setTimeout(handler, 100);
 }
 
 export const useSlides = (timeout: number = 4000) => {

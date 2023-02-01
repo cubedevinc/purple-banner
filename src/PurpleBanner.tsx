@@ -17,7 +17,7 @@ export interface PurpleBannerProps {
   slideDuration?: number;
 }
 
-const SlideDuration = 400;
+const SlideDuration = 4000;
 
 export const PurpleBanner: FC<PurpleBannerProps> = ({
   utmSource,
