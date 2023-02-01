@@ -50,9 +50,6 @@
 }
 
 @keyframes fire_hover_after {
-  0% {
-
-  }
   50% {
     opacity: 1;
   }
