@@ -8,8 +8,9 @@ import { useSlides } from "./lib/state";
 
 // @ts-ignore
 import styles from "./PurpleBanner.css";
+import stylesFire from "./PurpleBanner__event_fire.css";
 
-const cn = classNames.bind(styles);
+const cn = classNames.bind({...styles, ...stylesFire});
 
 export interface PurpleBannerProps {
   utmSource: string;
