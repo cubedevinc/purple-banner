@@ -14,13 +14,15 @@ const cn = classNames.bind(styles);
 export interface PurpleBannerProps {
   utmSource: string;
   debugMode?: boolean;
+  slideDuration?: number;
 }
 
-const IdleDuration = 4000;
+const SlideDuration = 400;
 
 export const PurpleBanner: FC<PurpleBannerProps> = ({
   utmSource,
   debugMode,
+  slideDuration = SlideDuration,
 }) => {
   const [show, setShow] = useState(false);
   const {
@@ -31,7 +33,7 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
     goToSlide,
     goLast,
     goFirst,
-  } = useSlides(IdleDuration);
+  } = useSlides(slideDuration);
 
   const noAnimate = !state.booted || state.state === "skipping";
   const hasNext = state.slides.length > 0;
@@ -100,7 +102,7 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
             e.preventDefault();
             goLast();
           }}
-          isActive={state.currentSlide === state.slides.length - 1}
+          isActive={state.currentSlide === -1}
           utmSource={utmSource}
         />
 
@@ -122,7 +124,7 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
             e.preventDefault();
             goFirst();
           }}
-          isActive={state.currentSlide === 0}
+          isActive={state.currentSlide === state.slides.length}
           utmSource={utmSource}
         />
         <EventLink event={state.slides[1]} utmSource={utmSource} />
