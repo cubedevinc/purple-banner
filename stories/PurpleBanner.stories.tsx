@@ -26,7 +26,9 @@ const withEvents = (Comp, events: EventBanner[]) => {
     const [ready, setReady] = useState(false);
     useEffect(() => {
       sessionStorage.clear();
-      writeEvents(events);
+      if (events) {
+        writeEvents(events);
+      }
       setReady(true);
     }, []);
 
@@ -176,3 +178,5 @@ export const SixEvents = withEvents(
     },
   }))
 );
+
+export const WithRealData = withEvents(() => <Component debugMode />, null);
