@@ -146,7 +146,7 @@ export const TwoEvents = withEvents(
   [1, 2].map((i) => ({
     link: "https://example.com/event/1",
     campaign: "utm",
-    message: `event ${i}`,
+    message: `event ${i} long enough message to wrap lines`,
     id: i,
     event: {
       slug: i,

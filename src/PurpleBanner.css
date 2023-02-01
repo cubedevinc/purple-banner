@@ -206,6 +206,7 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
     display: inline-block;
     text-align: center;
     padding: 0;
+    line-height: 16px;
   }
 
   .PurpleBanner__link {
@@ -215,6 +216,8 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
     margin: 0;
     display: flex;
     align-items: center;
+    line-height: 16px;
+    font-size: 12px;
   }
 
   .PurpleBanner__event_date {
@@ -227,12 +230,6 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
 
   .PurpleBanner__container:not(.PurpleBanner__container--singleSlide) {
     transform: translate(calc(-100vw * (var(--current) + 2)));
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .PurpleBanner__link {
-    font-size: 14px;
   }
 }
 
