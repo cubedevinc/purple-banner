@@ -11,7 +11,7 @@ export default {
 };
 
 const baseEvent = {
-  message: "event",
+  message: "event message",
   link: "https://example.com/event/1",
   campaign: "utm",
   id: 1,
@@ -43,6 +43,7 @@ export const Default = () => (
     {[
       {
         ...baseEvent,
+        message: "live event",
         event: {
           ...baseEvent.event,
           title: "live event",
@@ -52,6 +53,7 @@ export const Default = () => (
       },
       {
         ...baseEvent,
+        message: "upcoming event in 1 minute",
         event: {
           ...baseEvent.event,
           title: "upcoming event in 1 minute",
@@ -60,6 +62,7 @@ export const Default = () => (
       },
       {
         ...baseEvent,
+        message: "upcoming event in 15 minutes",
         event: {
           ...baseEvent.event,
           title: "upcoming event in 15 minutes",
@@ -68,6 +71,7 @@ export const Default = () => (
       },
       {
         ...baseEvent,
+        message: "upcoming event in 1 hour",
         event: {
           ...baseEvent.event,
           title: "upcoming event in 1 hour",
@@ -76,6 +80,7 @@ export const Default = () => (
       },
       {
         ...baseEvent,
+        message: "upcoming event in 4 hours",
         event: {
           ...baseEvent.event,
           title: "upcoming event in 4 hours",
@@ -84,6 +89,7 @@ export const Default = () => (
       },
       {
         ...baseEvent,
+        message: "upcoming event in 11 hours",
         event: {
           ...baseEvent.event,
           title: "upcoming event in 11 hours",
@@ -92,6 +98,7 @@ export const Default = () => (
       },
       {
         ...baseEvent,
+        message: "upcoming event in 15 hours (tomorrow)",
         event: {
           ...baseEvent.event,
           title: "upcoming event in 15 hours (tomorrow)",

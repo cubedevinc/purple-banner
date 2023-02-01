@@ -63,9 +63,10 @@ export const EventDateTime: FC<EventDateTimeProps> = ({ dateTime, isLive }) => {
 
 export interface EventDetailsProps {
   event: Event;
+  message: string;
 }
 
-export const EventDetails: FC<EventDetailsProps> = ({ event }) => {
+export const EventDetails: FC<EventDetailsProps> = ({ event, message }) => {
   const start = dayjs(event.dateTime);
   const end = start.add(event.duration || 0, "hour");
   const isLive = start.isBefore(Date.now()) && end.isAfter(Date.now());
@@ -74,7 +75,7 @@ export const EventDetails: FC<EventDetailsProps> = ({ event }) => {
   return (
     <div className={cn("PurpleBanner__event")}>
       <EventDateTime dateTime={event.dateTime} isLive={isLive} />
-      <span className={cn("PurpleBanner__event_title")}>{event.title}</span>
+      <span className={cn("PurpleBanner__event_title")}>{message}</span>
       <span
         className={cn("PurpleBanner__cta", {
           "PurpleBanner__event--live": isLive,
@@ -124,7 +125,11 @@ export const EventLink: FC<EventLinkProps> = ({
       rel={"noreferrer"}
       onClick={onClick}
     >
-      {event.event ? <EventDetails event={event.event} /> : event.message}
+      {event.event ? (
+        <EventDetails message={event.message} event={event.event} />
+      ) : (
+        event.message
+      )}
     </a>
   );
 };

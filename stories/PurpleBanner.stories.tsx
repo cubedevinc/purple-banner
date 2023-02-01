@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { writeEvents } from "../src/lib/session-storage";
 import { PurpleBanner as Component } from "../src/PurpleBanner";
+import { EventBanner } from "../src/types";
 
 export default {
   title: "PurpleBanner",
@@ -19,7 +20,7 @@ export default {
   },
 };
 
-const withEvents = (Comp, events) => {
+const withEvents = (Comp, events: EventBanner[]) => {
   // eslint-disable-next-line react/display-name
   return () => {
     const [ready, setReady] = useState(false);
@@ -129,6 +130,7 @@ export const OneEvent = withEvents(
       link: "https://example.com/event/1",
       campaign: "utm",
       id: 0,
+      message: `event`,
       event: {
         slug: 0,
         title: `event`,
@@ -144,6 +146,7 @@ export const TwoEvents = withEvents(
   [1, 2].map((i) => ({
     link: "https://example.com/event/1",
     campaign: "utm",
+    message: `event ${i}`,
     id: i,
     event: {
       slug: i,
@@ -162,6 +165,7 @@ export const SixEvents = withEvents(
     link: "https://example.com/event/1",
     campaign: "utm",
     id: i,
+    message: `event ${i}`,
     event: {
       slug: i,
       title: `event ${i}`,
