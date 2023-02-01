@@ -31,7 +31,7 @@ export default {
           preset: presetAdvanced(),
         }),
       ],
-      modules: true,
+      modules: false,
       minimize: true,
     }),
     terser({
