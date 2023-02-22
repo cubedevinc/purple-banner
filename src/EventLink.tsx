@@ -34,7 +34,7 @@ export const EventDateTime: FC<EventDateTimeProps> = ({ dateTime, isLive }) => {
   if (h > 12) {
     return (
       <span className={cn("PurpleBanner__event_date")}>
-        {d.format("D MMM")}
+        {d.format("MMMM D")}
       </span>
     );
   }
