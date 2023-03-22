@@ -245,6 +245,7 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
 }
 
 .PurpleBanner__event_live {
+  position: relative;
   margin-inline: 8px;
   margin-bottom: 0.1em;
   display: inline-block;
@@ -253,9 +254,20 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
   width: 0.4em;
   vertical-align: middle;
   background-color: currentColor;
-  box-shadow: 0 0 0.3em 0.1em currentColor;
   border-radius: 50%;
+}
 
+.PurpleBanner__event_live::after {
+  position: absolute;
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+  content: "";
+  height: 100%;
+  width: 100%;
+  background-color: currentColor;
+  box-shadow: 0 0 0.3em 0.1em currentColor;
+  transform: scale(1);
   animation-name: live;
   animation-iteration-count: infinite;
   animation-duration: 3s;
@@ -263,13 +275,16 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
 
 @keyframes live {
   0%, 20%, 30%, 60%, 80%, 100% {
-    box-shadow: 0 0 0.3em 0.1em currentColor;
+    transform: scale(1);
+    opacity: 1;
   }
   10%, 70% {
-    box-shadow: 0 0 0.35em 0.15em currentColor;
+    transform: scale(1.1);
+    opacity: 0.8;
   }
   45% {
-    box-shadow: 0 0 0.4em 0.2em currentColor;
+    transform: scale(1.2);
+    opacity: 0.5;
   }
 }
 
@@ -354,22 +369,10 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
 
   margin-inline: 4px;
 
-  animation-name: fire_flame_shadow, fire_flame_rotate, fire_flame_border;
+  animation-name: fire_flame_rotate;
   animation-direction: alternate;
   animation-iteration-count: infinite;
   animation-duration: 1s, 0.75s, 1.3s;
-}
-
-@keyframes fire_flame_shadow {
-  0%, 100%, 50% {
-    box-shadow: inset -0.07em 0.07em 0 0.18em currentColor;
-  }
-  25% {
-    box-shadow: inset -0.05em 0.08em 0 0.16em currentColor;
-  }
-  75% {
-    box-shadow: inset -0.08em 0.05em 0 0.16em currentColor;
-  }
 }
 
 @keyframes fire_flame_rotate {
@@ -381,20 +384,5 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
   }
   100% {
     transform: rotateZ(-50deg);
-  }
-}
-
-@keyframes fire_flame_border {
-  0%, 100%, 50% {
-    border-top-left-radius: 80% 80%;
-    border-bottom-right-radius: 80% 80%;
-  }
-  25% {
-    border-top-left-radius: 100% 80%;
-    border-bottom-right-radius: 80% 80%;
-  }
-  75% {
-    border-top-left-radius: 80% 100%;
-    border-bottom-right-radius: 80% 100%;
   }
 }
