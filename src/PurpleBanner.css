@@ -143,6 +143,10 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
   transform: translate(-1em);
 }
 
+.PurpleBanner__link:hover {
+  text-decoration: none;
+}
+
 .PurpleBanner__link:hover,
 .PurpleBanner__link:focus-visible {
   color: inherit;
