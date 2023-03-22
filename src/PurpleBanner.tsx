@@ -129,7 +129,7 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
         <EventLink event={state.slides[1]} utmSource={utmSource} />
       </>
     ) : state.slides.length === 1 ? (
-      <EventLink event={state.slides[0]} utmSource={utmSource} />
+      <EventLink event={state.slides[0]} utmSource={utmSource} isActive />
     ) : null;
 
   return (
