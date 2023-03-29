@@ -25,6 +25,7 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - run: npm install
       - run: npm run build
+      - run: npm run pack
 
       - name: update package version
         run: |
@@ -52,6 +53,7 @@ jobs:
           git tag -a v$PACKAGE_VERSION -m "release: $PACKAGE_VERSION"
           git push origin v$PACKAGE_VERSION
           gh release create v$PACKAGE_VERSION --title "v$PACKAGE_VERSION"
+          gh release upload v$PACKAGE_VERSION ./*.tgz
         env:
           PACKAGE_VERSION: ${{ inputs.version }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
