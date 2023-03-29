@@ -44,7 +44,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: npm publish
-        if: ${{ inputs.dryRun != 'true' }}
+        if: ${{ inputs.dryRun != true }}
         run: echo "publishing to npm $PACKAGE_VERSION"
         env:
           PACKAGE_VERSION: ${{ inputs.version }}
