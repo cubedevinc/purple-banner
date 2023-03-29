@@ -3,3 +3,5 @@ dist/
 todo
 .rollup.cache
 /*.tgz
+
+.tool-versions
