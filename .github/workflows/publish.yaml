@@ -17,6 +17,7 @@ jobs:
 
       - name: check if package version changed
         run: |
+          git fetch origin main
           echo "$(git diff $(git merge-base origin/main HEAD) HEAD | grep '\"version\": ')"
           if git diff $(git merge-base origin/main HEAD) HEAD | grep '"version": '; then
             echo "::set-output name=version_changed::true"
