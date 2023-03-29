@@ -1,32 +1,29 @@
 name: publish
 
 on:
-  push:
-    branches:
-      - main
-      - chore/automatic-release
+  workflow_dispatch:
+    inputs:
+      version:
+        description: npm package version (without 'v' prefix)
+        required: true
+        type: string
+      dryRun:
+        description: dry run - run the workflow without publishing to npm
+        required: true
+        default: true
+        type: boolean
+
+# push:
+#   branches:
+#     - main
+#     - chore/automatic-release
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
 
-    # if: ${{ startsWith(github.event.head_commit.message, 'release:') }}
-
     steps:
       - uses: actions/checkout@v3
-
-      - name: check if package version changed
-        run: |
-          git fetch origin main
-          echo "$(git diff $(git merge-base origin/main HEAD) HEAD | grep '\"version\": ')"
-          if git diff $(git merge-base origin/main HEAD) HEAD | grep '"version": '; then
-            echo "version_changed=true" >> $GITHUB_ENV
-            echo "detected version change, will run publish step" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "version_changed=false" >> $GITHUB_ENV
-            echo "no version change, skiping release" >> $GITHUB_STEP_SUMMARY
-          fi
-
       - uses: actions/setup-node@v3
         with:
           node-version: 16
@@ -35,9 +32,10 @@ jobs:
       - run: npm run build
 
       - name: npm publish
-        if: ${{ env.version_changed == 'true' }}
-        run: echo "publishing to npm"
+        if: ${{ inputs.dryRun != 'true' }}
+        run: echo "publishing to npm $PACKAGE_VERSION"
         env:
+          PACKAGE_VERSION: ${{ inputs.version }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
 
       # npm publish --access public
