@@ -21,8 +21,10 @@ jobs:
           echo "$(git diff $(git merge-base origin/main HEAD) HEAD | grep '\"version\": ')"
           if git diff $(git merge-base origin/main HEAD) HEAD | grep '"version": '; then
             echo "version_changed=true" >> $GITHUB_ENV
+            echo "detected version change, will run publish step" >> $GITHUB_STEP_SUMMARY
           else
             echo "version_changed=false" >> $GITHUB_ENV
+            echo "no version change, skiping release" >> $GITHUB_STEP_SUMMARY
           fi
 
       - uses: actions/setup-node@v2
