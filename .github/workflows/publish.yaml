@@ -24,6 +24,7 @@ jobs:
 
       - name: check if package version changed
         run: |
+          echo "$(git diff HEAD^ HEAD | grep '\"version\": ')"
           if git diff HEAD^ HEAD | grep '"version": '; then
             echo "::set-output name=version_changed::true"
           else
