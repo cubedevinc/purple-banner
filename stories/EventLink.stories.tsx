@@ -105,6 +105,15 @@ export const Default = () => (
           dateTime: dayjs().add(15, "hour").toString(),
         },
       },
+      {
+        ...baseEvent,
+        message: "past event",
+        event: {
+          ...baseEvent.event,
+          title: "past event",
+          dateTime: dayjs().subtract(15, "hour").toString(),
+        },
+      },
     ].map((event, i) => (
       <Component
         key={i}
