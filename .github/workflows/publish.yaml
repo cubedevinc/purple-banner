@@ -8,15 +8,10 @@ on:
         required: true
         type: string
       dryRun:
-        description: dry run - run the workflow without publishing to npm
+        description: run without publishing to npm
         required: true
-        default: true
+        default: false
         type: boolean
-
-# push:
-#   branches:
-#     - main
-#     - chore/automatic-release
 
 jobs:
   build-and-publish:
