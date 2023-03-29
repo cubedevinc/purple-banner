@@ -35,14 +35,17 @@ jobs:
         run: |
           echo "updating package version to $PACKAGE_VERSION"
           npm version $PACKAGE_VERSION --no-git-tag-version
-          git status
         env:
           PACKAGE_VERSION: ${{ inputs.version }}
 
-      - name: push version change
+      - name: commit and push version change
         if: ${{ inputs.dryRun != true }}
-        run: git push origin HEAD:main
+        run: |
+          git status
+          git commit -am "release: $PACKAGE_VERSION"
+          git push origin HEAD:main
         env:
+          PACKAGE_VERSION: ${{ inputs.version }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: npm publish
