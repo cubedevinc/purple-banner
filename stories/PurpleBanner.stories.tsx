@@ -112,6 +112,19 @@ export const Default = withEvents(
         duration: 12,
       },
     },
+    {
+      message: "event 6 past",
+      link: "https://example.com/event/6",
+      campaign: "3",
+      id: 7,
+      event: {
+        slug: "event",
+        title: "past event",
+        zoomWebinarId: "123",
+        dateTime: dayjs().subtract(12, "hour").toString(),
+        duration: 12,
+      },
+    },
   ]
 );
 
