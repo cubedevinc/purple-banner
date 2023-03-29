@@ -27,19 +27,16 @@ jobs:
             echo "no version change, skiping release" >> $GITHUB_STEP_SUMMARY
           fi
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
-          node-version: "16.x"
+          node-version: 16
           registry-url: "https://registry.npmjs.org"
       - run: npm install
       - run: npm run build
 
       - name: npm publish
         if: ${{ env.version_changed == 'true' }}
-        run: |
-          echo "//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}" > .npmrc
-          echo "publishing to npm"
-
+        run: echo "publishing to npm"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
 
