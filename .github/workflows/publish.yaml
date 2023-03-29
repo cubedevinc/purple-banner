@@ -48,6 +48,16 @@ jobs:
           PACKAGE_VERSION: ${{ inputs.version }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: create and push git tag
+        if: ${{ inputs.dryRun != true }}
+        run: |
+          git tag -a v$PACKAGE_VERSION -m "release: $PACKAGE_VERSION"
+          git push origin v$PACKAGE_VERSION
+          gh repo release create v$PACKAGE_VERSION --title "release: $PACKAGE_VERSION"
+        env:
+          PACKAGE_VERSION: ${{ inputs.version }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: npm publish
         if: ${{ inputs.dryRun != true }}
         run: echo "publishing to npm $PACKAGE_VERSION"
