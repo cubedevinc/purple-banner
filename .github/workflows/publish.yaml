@@ -34,7 +34,8 @@ jobs:
       - name: update package version
         run: |
           echo "updating package version to $PACKAGE_VERSION"
-          npm version $PACKAGE_VERSION
+          npm version $PACKAGE_VERSION --no-git-tag-version
+          git status
         env:
           PACKAGE_VERSION: ${{ inputs.version }}
 
