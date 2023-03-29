@@ -42,6 +42,9 @@ jobs:
         if: ${{ inputs.dryRun != true }}
         run: |
           git status
+          git add .
+          git config --global user.email "info@cube.dev"
+          git config --global user.name "Cube Dev"
           git commit -am "release: $PACKAGE_VERSION"
           git push origin HEAD:main
         env:
