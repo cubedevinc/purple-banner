@@ -58,16 +58,9 @@ jobs:
 
       - name: npm publish
         if: ${{ inputs.dryRun != true }}
-        run: echo "publishing to npm $PACKAGE_VERSION"
+        run: |
+          echo "publishing to npm $PACKAGE_VERSION"
+          npm publish --access public
         env:
           PACKAGE_VERSION: ${{ inputs.version }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
-
-      # npm publish --access public
-
-      # tag the release, using action-gh-release action
-      # - uses: softprops/action-gh-release@v1
-      #   with:
-      #     files: dist/*.tgz
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
