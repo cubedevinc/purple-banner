@@ -14,22 +14,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v2
-        with:
-          node-version: "16.x"
-          registry-url: "https://registry.npmjs.org"
-
-      - run: npm install
-      - run: npm run build
 
       - name: check if package version changed
         run: |
-          echo "$(git diff --quiet $(git merge-base origin/master HEAD) HEAD | grep '\"version\": ')"
-          if git diff HEAD^ HEAD | grep '"version": '; then
+          echo "$(git diff $(git merge-base origin/main HEAD) HEAD | grep '\"version\": ')"
+          if git diff $(git merge-base origin/main HEAD) HEAD | grep '"version": '; then
             echo "::set-output name=version_changed::true"
           else
             echo "::set-output name=version_changed::false"
           fi
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16.x"
+          registry-url: "https://registry.npmjs.org"
+      - run: npm install
+      - run: npm run build
 
       - name: npm publish
         if: ${{ steps.check_version.outputs.version_changed == 'true' }}
