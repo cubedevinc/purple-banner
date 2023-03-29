@@ -40,6 +40,7 @@ jobs:
           PACKAGE_VERSION: ${{ inputs.version }}
 
       - name: push version change
+        if: ${{ inputs.dryRun != true }}
         run: git push origin HEAD:main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
