@@ -1,9 +1,13 @@
+:root {
+  --font: var(--purple-banner-font, "Cera Pro");
+}
+
 .PurpleBanner {
   overflow: hidden;
   display: flex;
   align-items: center;
 
-  font-family: "Cera Pro", CeraPro, CeraPro-Regular, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
+  font-family: var(--font), CeraPro, CeraPro-Regular, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
     Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif !important;
 
   max-height: 0;
