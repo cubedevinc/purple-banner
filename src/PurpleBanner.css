@@ -30,9 +30,9 @@
   left: -133vw;
   width: 133vw;
 
-  background-image: linear-gradient(45deg,
+  background-image: linear-gradient(90deg,
     rgba(136, 106, 255, 0) 10%,
-    rgba(136, 106, 255, 0.2) 50%,
+    rgba(136, 106, 255, 0.3) 50%,
     rgba(136, 106, 255, 0) 90%);
 
   background-position: right;
@@ -40,13 +40,13 @@
   background-repeat: no-repeat;
 
   animation-name: gradient-move;
-  animation-duration: 6s, 1s;
+  animation-duration: 8s;
   animation-iteration-count: infinite;
   animation-direction: normal, alternate;
 }
 
 @keyframes gradient-move {
-  40% {
+  60% {
     transform: translateX(calc(233vw));
   }
   100% {
