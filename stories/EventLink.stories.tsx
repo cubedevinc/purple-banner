@@ -29,7 +29,6 @@ const BannerPreview = ({ children }) => (
     style={{
       height: "auto",
       maxHeight: "none",
-      color: "white",
       display: "flex",
       flexFlow: "column",
     }}

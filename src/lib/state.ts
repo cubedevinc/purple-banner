@@ -130,9 +130,14 @@ function tick(handler: () => void) {
 
 export const useSlides = (timeout: number = 4000) => {
   const [state, dispatch] = useReducer(bannerStateReducer, initialState);
-  const timer = useRef<NodeJS.Timer>();
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const resetTimeout = () => clearTimeout(timer.current);
+  const resetTimeout = () => {
+    if (timer.current) {
+      clearTimeout(timer.current);
+      timer.current = null;
+    }
+  };
 
   const goToSlide = (i: number, noAnimate?: boolean) => {
     resetTimeout();
