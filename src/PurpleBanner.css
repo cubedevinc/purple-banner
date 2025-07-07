@@ -167,16 +167,19 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
     white-space: initial;
   }
 
-  .PurpleBanner__event_date {
-    margin-right: 8px;
+  .PurpleBanner__event_date,
+  .PurpleBanner__cta {
+    display: inline-flex;
     border-radius: 4px;
     padding-inline: 4px;
   }
 
+  .PurpleBanner__event_date {
+    margin-right: 8px;
+  }
+
   .PurpleBanner__cta {
     margin-left: 8px;
-    border-radius: 4px;
-    padding-inline: 4px;
   }
 
   .PurpleBanner__container:not(.PurpleBanner__container--singleSlide) {
