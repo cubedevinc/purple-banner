@@ -193,3 +193,16 @@ export const SixEvents = withEvents(
 );
 
 export const WithRealData = withEvents(() => <Component debugMode />, null);
+
+export const SummitPromoDemo = withEvents(
+  () => <Component utmSource="storybook" debugMode />,
+  [
+    {
+      id: 1,
+      message: "Analytics Summit 2025",
+      link: "https://cube.dev/events/summit",
+      campaign: "summit2025",
+      isSummitPromo: true
+    }
+  ]
+);

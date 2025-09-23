@@ -18,6 +18,7 @@ const query = `
         message,
         link,
         campaign,
+        isSummitPromo,
         event {
           slug
           dateTime

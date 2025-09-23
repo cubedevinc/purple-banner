@@ -4,6 +4,7 @@ import classNames from "classnames/bind";
 import { loadEvents } from "./lib/contentful";
 import { checkEvents, readEvents, writeEvents } from "./lib/session-storage";
 import EventLink from "./EventLink";
+import HeroBanner from "./HeroBanner";
 import { useSlides } from "./lib/state";
 
 // @ts-ignore
@@ -61,7 +62,6 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
     const hide = navigator.userAgent.includes("Googlebot");
     if (!hide) {
       setShow(true);
-
       dispatch({ type: "load" });
 
       (checkEvents() ? readEvents() : loadEvents({ debugMode }))
@@ -82,10 +82,25 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
     }
 
     return () => resetTimeout();
-  }, []);
+  }, [debugMode]);
 
   if (!show) {
     return null;
+  }
+
+  // Check if there's an active summit promo banner
+  const summitPromoBanner = state.slides.find(slide => slide.isSummitPromo);
+
+  if (summitPromoBanner) {
+    return (
+      <div
+        className={cn("PurpleBanner", "PurpleBanner--hero", {
+          "PurpleBanner--visible": true,
+        })}
+      >
+        <HeroBanner banner={summitPromoBanner} utmSource={utmSource} />
+      </div>
+    );
   }
 
   const slides =
