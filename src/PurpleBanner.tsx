@@ -90,19 +90,19 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
   }
 
   // Check if there's an active summit promo banner
-  // const summitPromoBanner = state.slides.find(slide => slide.isSummitPromo);
+  const summitPromoBanner = state.slides.find(slide => slide.isSummitPromo);
 
-  // if (summitPromoBanner) {
-  //   return (
-  //     <div
-  //       className={cn("PurpleBanner", "PurpleBanner--hero", {
-  //         "PurpleBanner--visible": true,
-  //       })}
-  //     >
-  //       <HeroBanner banner={summitPromoBanner} utmSource={utmSource} />
-  //     </div>
-  //   );
-  // }
+  if (summitPromoBanner) {
+    return (
+      <div
+        className={cn("PurpleBanner", "PurpleBanner--hero", {
+          "PurpleBanner--visible": true,
+        })}
+      >
+        <HeroBanner banner={summitPromoBanner} utmSource={utmSource} />
+      </div>
+    );
+  }
 
   const slides =
     state.state === "loading" ? null : state.slides.length > 1 ? (
