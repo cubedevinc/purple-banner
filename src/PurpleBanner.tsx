@@ -62,6 +62,7 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
     const hide = navigator.userAgent.includes("Googlebot");
     if (!hide) {
       setShow(true);
+
       dispatch({ type: "load" });
 
       (checkEvents() ? readEvents() : loadEvents({ debugMode }))
@@ -82,7 +83,7 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
     }
 
     return () => resetTimeout();
-  }, [debugMode]);
+  }, []);
 
   if (!show) {
     return null;
