@@ -409,7 +409,6 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
   color: #0F0F23;
 }
 
-
 .PurpleBanner__hero-cta-button {
   background-color: #9542D4;
   border-radius: 6px;
@@ -437,9 +436,9 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
   :root {
     --hero-background: linear-gradient(90deg,
       #351C54 0%,
-      #7734AA calc(50% - 100px),
-      #E8D0F7 calc(50% + 200px),
-      #7734AA calc(50% + 400px),
+      #7734AA calc(50% - 400px),
+      #E8D0F7 calc(50% + 400px),
+      #7734AA calc(50% + 600px),
       #351C54 100%);
   }
 

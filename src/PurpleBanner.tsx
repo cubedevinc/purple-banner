@@ -64,7 +64,7 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
       setShow(true);
       dispatch({ type: "load" });
 
-      loadEvents({ debugMode })
+      (checkEvents() ? readEvents() : loadEvents({ debugMode }))
         .then((events) => {
           writeEvents(events);
           dispatch({
