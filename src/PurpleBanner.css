@@ -1,5 +1,12 @@
 :root {
-  --font: var(--purple-banner-font, "Cera Pro");
+  --font: var(--purple-banner-font, "Cera Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif);
+  --hero-height: 96px;
+  --hero-background: linear-gradient(90deg,
+    #351C54 0%,
+    #7734AA calc(50% - 200px),
+    #E8D0F7 calc(50% + 100px),
+    #7734AA calc(50% + 300px),
+    #351C54 100%);
 }
 
 .PurpleBanner {
@@ -332,5 +339,117 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
   }
   100% {
     transform: skew(-5deg, -5deg);
+  }
+}
+
+/* Hero Banner Styles */
+.PurpleBanner--hero {
+  max-height: var(--hero-height);
+  background: var(--hero-background);
+  color: #fff;
+}
+
+.PurpleBanner--hero.PurpleBanner--visible {
+  max-height: var(--hero-height);
+}
+
+.PurpleBanner__hero-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: var(--hero-height);
+  padding: 20px;
+  box-sizing: border-box;
+  color: currentColor;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.PurpleBanner__hero-link:hover {
+  transform: translateY(-2px);
+  text-decoration: none;
+    color: currentColor;
+}
+
+
+.PurpleBanner__hero-content {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  max-width: 796px;
+  width: 100%;
+  min-width: 360px;
+  padding-inline: 16px;
+}
+
+.PurpleBanner__hero-block {
+  flex: 1;
+  display: flex;
+}
+
+.PurpleBanner__hero-icon {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.PurpleBanner__hero-cta {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  background-color: #fff;
+  padding: 4px 4px 4px 16px;
+  color: #0F0F23;
+}
+
+
+.PurpleBanner__hero-cta-button {
+  background-color: #9542D4;
+  border-radius: 6px;
+  padding: 4px 20px;
+  color: #fff;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  text-decoration: none;
+}
+
+@media (width <= 1200px) {
+  :root {
+    --hero-background: linear-gradient(90deg,
+      #351C54 0%,
+      #7734AA calc(50% - 150px),
+      #E8D0F7 calc(50% + 150px),
+      #7734AA calc(50% + 350px),
+      #351C54 100%);
+  }
+}
+
+@media (width <= 796px) {
+  :root {
+    --hero-background: linear-gradient(90deg,
+      #351C54 0%,
+      #7734AA calc(50% - 100px),
+      #E8D0F7 calc(50% + 200px),
+      #7734AA calc(50% + 400px),
+      #351C54 100%);
+  }
+
+  .PurpleBanner--hero {
+    --hero-height: 150px;
+  }
+
+  .PurpleBanner__hero-content {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
   }
 }

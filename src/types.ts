@@ -11,6 +11,7 @@ export interface EventBanner {
   message: string;
   campaign: string;
   event?: Event;
+  isSummitPromo?: boolean;
 }
 
 export interface RawEventBanner extends Omit<EventBanner, "id"> {
@@ -18,3 +19,4 @@ export interface RawEventBanner extends Omit<EventBanner, "id"> {
     id: string;
   };
 }
+
