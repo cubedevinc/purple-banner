@@ -1,12 +1,28 @@
 :root {
-  --font: var(--purple-banner-font, "Cera Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif);
+  --font: var(
+    --purple-banner-font,
+    "Cera Pro",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Roboto",
+    "Oxygen",
+    "Ubuntu",
+    "Cantarell",
+    "Fira Sans",
+    "Droid Sans",
+    "Helvetica Neue",
+    sans-serif
+  );
   --hero-height: 96px;
-  --hero-background: linear-gradient(90deg,
-    #351C54 0%,
-    #7734AA calc(50% - 200px),
-    #E8D0F7 calc(50% + 200px),
-    #7734AA calc(50% + 400px),
-    #351C54 100%);
+  --hero-background: linear-gradient(
+    90deg,
+    #351c54 0%,
+    #7734aa calc(50% - 200px),
+    #e8d0f7 calc(50% + 200px),
+    #7734aa calc(50% + 400px),
+    #351c54 100%
+  );
 }
 
 .PurpleBanner {
@@ -19,16 +35,22 @@
   align-items: center;
   max-height: 0;
   overflow: hidden;
-  color: #0F0F23;
-  font-family: var(--font), CeraPro, CeraPro-Regular, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
-    Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif !important;
-  background-image: linear-gradient(265deg, #FFA2C2 0%, #E5A4FF 50%, #C4C2FF 100%);
+  color: #0f0f23;
+  font-family: var(--font), CeraPro, CeraPro-Regular, -apple-system,
+    BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,
+    Droid Sans, Helvetica Neue, sans-serif !important;
+  background-image: linear-gradient(
+    265deg,
+    #ffa2c2 0%,
+    #e5a4ff 50%,
+    #c4c2ff 100%
+  );
   transition: max-height 0.5s linear, color 0.5s linear;
 }
 
 .PurpleBanner--visible {
   max-height: 48px;
-  color: #0F0F23;
+  color: #0f0f23;
 }
 
 .PurpleBanner__container {
@@ -84,7 +106,8 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
 }
 
 .PurpleBanner__link--active + a.PurpleBanner__link:not(:only-child):hover,
-.PurpleBanner__link--active + a.PurpleBanner__link:not(:only-child):focus-visible {
+.PurpleBanner__link--active
+  + a.PurpleBanner__link:not(:only-child):focus-visible {
   opacity: 0.6;
   transform: translate(-1em);
 }
@@ -137,11 +160,11 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
   border: none;
   color: white;
   font-weight: 400;
-  background-color: #0F0F23;
+  background-color: #0f0f23;
 }
 
 .PurpleBanner__event_live {
-  color: #FF4F64;
+  color: #ff4f64;
 }
 
 .PurpleBanner__cta {
@@ -151,7 +174,7 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
   border: 1px solid currentColor;
   border-radius: 8px;
   padding-inline: 8px;
-  color: #0F0F23;
+  color: #0f0f23;
 }
 
 @media (width <= 960px) {
@@ -214,18 +237,19 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
   margin-right: 8px;
   border-radius: 50%;
   vertical-align: middle;
-  box-shadow:
-    0 0 7px 0 rgb(255 79 100 / 0.8),
-    0 0 4px 0 rgb(255 79 100);
+  box-shadow: 0 0 7px 0 rgb(255 79 100 / 0.8), 0 0 4px 0 rgb(255 79 100);
   background-color: currentColor;
   animation: flashing_dot 900ms infinite linear;
 }
 
 @keyframes flashing_dot {
-  0%, 66.67%, 100% {
+  0%,
+  66.67%,
+  100% {
     opacity: 1;
   }
-  16.67%, 50% {
+  16.67%,
+  50% {
     opacity: 0;
   }
 }
@@ -367,11 +391,10 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
 }
 
 .PurpleBanner__hero-link:hover {
-    color: currentColor;
+  color: currentColor;
   text-decoration: none;
   transform: translateY(-2px);
 }
-
 
 .PurpleBanner__hero-content {
   display: flex;
@@ -402,7 +425,7 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
   gap: 10px;
   border-radius: 6px;
   padding: 4px 4px 4px 16px;
-  color: #0F0F23;
+  color: #0f0f23;
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
@@ -422,28 +445,32 @@ a.PurpleBanner__link:not(.PurpleBanner__link--active):not(:only-child):focus-vis
   font-style: normal;
   line-height: 24px;
   text-decoration: none;
-  background-color: #9542D4;
+  background-color: #9542d4;
 }
 
 @media (width <= 1200px) {
   :root {
-    --hero-background: linear-gradient(90deg,
-      #351C54 0%,
-      #7734AA calc(50% - 250px),
-      #E8D0F7 calc(50% + 250px),
-      #7734AA calc(50% + 450px),
-      #351C54 100%);
+    --hero-background: linear-gradient(
+      90deg,
+      #351c54 0%,
+      #7734aa calc(50% - 250px),
+      #e8d0f7 calc(50% + 250px),
+      #7734aa calc(50% + 450px),
+      #351c54 100%
+    );
   }
 }
 
 @media (width <= 796px) {
   :root {
-    --hero-background: linear-gradient(90deg,
-      #351C54 0%,
-      #7734AA calc(50%),
-      #E8D0F7 calc(50% + 300px),
-      #7734AA calc(50% + 500px),
-      #351C54 100%);
+    --hero-background: linear-gradient(
+      90deg,
+      #351c54 0%,
+      #7734aa calc(50%),
+      #e8d0f7 calc(50% + 300px),
+      #7734aa calc(50% + 500px),
+      #351c54 100%
+    );
   }
 
   .PurpleBanner--hero {

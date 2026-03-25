@@ -90,7 +90,7 @@ export const PurpleBanner: FC<PurpleBannerProps> = ({
   }
 
   // Check if there's an active summit promo banner
-  const summitPromoBanner = state.slides.find(slide => slide.isSummitPromo);
+  const summitPromoBanner = state.slides.find((slide) => slide.isSummitPromo);
 
   if (summitPromoBanner) {
     return (
