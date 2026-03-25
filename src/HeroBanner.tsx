@@ -15,10 +15,7 @@ export interface HeroBannerProps {
   utmSource: string;
 }
 
-export const HeroBanner: FC<HeroBannerProps> = ({
-  banner,
-  utmSource,
-}) => {
+export const HeroBanner: FC<HeroBannerProps> = ({ banner, utmSource }) => {
   return (
     <a
       className={cn("PurpleBanner__hero-link")}
@@ -26,13 +23,14 @@ export const HeroBanner: FC<HeroBannerProps> = ({
       target="_blank"
       rel="noreferrer"
     >
-        <div className={cn("PurpleBanner__hero-content")}>
-          <div className={cn("PurpleBanner__hero-block")}>
-            <SummitLogo className={cn("PurpleBanner__hero-icon")} />
-          </div>
-          <div className={cn("PurpleBanner__hero-block")}>
-            <div className={cn("PurpleBanner__hero-cta")}>
-            Registration is open! <div className={cn("PurpleBanner__hero-cta-button")}>
+      <div className={cn("PurpleBanner__hero-content")}>
+        <div className={cn("PurpleBanner__hero-block")}>
+          <SummitLogo className={cn("PurpleBanner__hero-icon")} />
+        </div>
+        <div className={cn("PurpleBanner__hero-block")}>
+          <div className={cn("PurpleBanner__hero-cta")}>
+            Registration is open!{" "}
+            <div className={cn("PurpleBanner__hero-cta-button")}>
               Join Now
               <svg
                 width="10"
@@ -44,11 +42,11 @@ export const HeroBanner: FC<HeroBannerProps> = ({
                   d="m5 .4-1.01 1 2.83 2.82-1.09-.03H.58v1.46l5.15-.02 1.1-.03L4 8.45l1 .99 4.36-4.35v-.34L5 .4Z"
                   fill="currentColor"
                 />
-                </svg>
-              </div>
+              </svg>
             </div>
           </div>
         </div>
+      </div>
     </a>
   );
 };

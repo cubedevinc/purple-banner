@@ -12,7 +12,8 @@
     "declaration": true,
     "declarationDir": "types",
     "emitDeclarationOnly": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
   },
   "include": ["./src/**/*"],
   "exclude": ["./stories", "./node_modules", "./dist"]

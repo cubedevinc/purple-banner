@@ -1,7 +1,7 @@
 {
   "name": "@cube-dev/purple-banner",
   "description": "React-component for showing Cube Dev, Inc. events on our websites.",
-  "version": "2.0.21",
+  "version": "2.0.22",
   "main": "dist/cjs/index.js",
   "types": "dist/cjs/types/index.d.ts",
   "files": [
@@ -31,6 +31,7 @@
     "@storybook/react": "^6.5.16",
     "@storybook/testing-library": "^0.0.13",
     "babel-loader": "^8.2.5",
+    "baseline-browser-mapping": "^2.10.10",
     "cssnano": "^5.1.14",
     "cssnano-preset-advanced": "^5.3.9",
     "eslint": "^8.17.0",
@@ -54,7 +55,7 @@
     "build:preview": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript --environment NODE_ENV:development",
     "lint": "eslint .eslintrc.js rollup.config.js src/ --fix",
     "pretify": "prettier .eslintrc.js rollup.config.js src/ --write --ignore-path .eslintignore",
-    "build-storybook": "build-storybook",
-    "storybook": "start-storybook -p 6006"
+    "build-storybook": "NODE_OPTIONS=--openssl-legacy-provider build-storybook",
+    "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006"
   }
 }
