@@ -1,67 +1,111 @@
 name: publish
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       version:
-        description: npm package version (without 'v' prefix)
-        required: true
+        description: npm package version (without 'v' prefix). Leave empty to use version from package.json
+        required: false
         type: string
       dryRun:
         description: run without publishing to npm
-        required: true
         default: false
         type: boolean
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+permissions:
+  contents: write
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: github.event_name == 'workflow_dispatch' || !startsWith(github.event.head_commit.message, 'release:')
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
         with:
-          node-version: 16
+          fetch-depth: 0
+
+      - name: determine version
+        id: version
+        run: |
+          if [ -n "$INPUT_VERSION" ]; then
+            echo "version=$INPUT_VERSION" >> $GITHUB_OUTPUT
+            echo "Version from workflow input: $INPUT_VERSION"
+          else
+            VERSION=$(node -p "require('./package.json').version")
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "Version from package.json: $VERSION"
+          fi
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+
+      - name: check if already released
+        id: check
+        run: |
+          if git tag -l "v$VERSION" | grep -q .; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "::notice::Tag v$VERSION already exists — skipping release"
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "Will release v$VERSION"
+          fi
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.skip == 'false'
+        with:
+          node-version: 22
           registry-url: "https://registry.npmjs.org"
-      - run: npm install
-      - run: npm run build
-      - run: npm pack
+
+      - name: install dependencies
+        if: steps.check.outputs.skip == 'false'
+        run: npm install
 
       - name: update package version
-        run: |
-          echo "updating package version to $PACKAGE_VERSION"
-          npm version $PACKAGE_VERSION --no-git-tag-version
+        if: steps.check.outputs.skip == 'false'
+        run: npm version $VERSION --no-git-tag-version --allow-same-version
         env:
-          PACKAGE_VERSION: ${{ inputs.version }}
+          VERSION: ${{ steps.version.outputs.version }}
+
+      - name: build
+        if: steps.check.outputs.skip == 'false'
+        run: npm run build
+
+      - name: pack
+        if: steps.check.outputs.skip == 'false'
+        run: npm pack
 
       - name: commit and push version change
-        if: ${{ inputs.dryRun != true }}
+        if: steps.check.outputs.skip == 'false' && inputs.dryRun != true
         run: |
-          git status
-          git add .
           git config --global user.email "info@cube.dev"
           git config --global user.name "Cube Dev"
-          git commit -am "release: $PACKAGE_VERSION"
-          git push origin HEAD:main
+          git add .
+          git diff --cached --quiet && echo "No changes to commit" || (git commit -am "release: $VERSION" && git push origin HEAD:main)
         env:
-          PACKAGE_VERSION: ${{ inputs.version }}
+          VERSION: ${{ steps.version.outputs.version }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: create and push git tag
-        if: ${{ inputs.dryRun != true }}
+      - name: create tag and release
+        if: steps.check.outputs.skip == 'false' && inputs.dryRun != true
         run: |
-          git tag -a v$PACKAGE_VERSION -m "release: $PACKAGE_VERSION"
-          git push origin v$PACKAGE_VERSION
-          gh release create v$PACKAGE_VERSION --title "v$PACKAGE_VERSION" ./*.tgz
+          git tag -a v$VERSION -m "release: $VERSION"
+          git push origin v$VERSION
+          gh release create v$VERSION --title "v$VERSION" --generate-notes ./*.tgz
         env:
-          PACKAGE_VERSION: ${{ inputs.version }}
+          VERSION: ${{ steps.version.outputs.version }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: npm publish
-        if: ${{ inputs.dryRun != true }}
-        run: |
-          echo "publishing to npm $PACKAGE_VERSION"
-          npm publish --access public
+      - name: publish to npm
+        if: steps.check.outputs.skip == 'false' && inputs.dryRun != true
+        run: npm publish --access public
         env:
-          PACKAGE_VERSION: ${{ inputs.version }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
