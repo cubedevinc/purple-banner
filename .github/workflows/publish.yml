@@ -19,7 +19,8 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: write
+  id-token: write # OIDC for npm Trusted Publishing
+  contents: write # commit, tag, GitHub release
 
 jobs:
   build-and-publish:
@@ -62,8 +63,12 @@ jobs:
       - uses: actions/setup-node@v4
         if: steps.check.outputs.skip == 'false'
         with:
-          node-version: 22
+          node-version: "24"
           registry-url: "https://registry.npmjs.org"
+
+      - name: ensure npm CLI for trusted publishing
+        if: steps.check.outputs.skip == 'false'
+        run: npm install -g npm@^11.5.1
 
       - name: install dependencies
         if: steps.check.outputs.skip == 'false'
@@ -107,5 +112,3 @@ jobs:
       - name: publish to npm
         if: steps.check.outputs.skip == 'false' && inputs.dryRun != true
         run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
